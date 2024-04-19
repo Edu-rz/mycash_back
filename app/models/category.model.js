@@ -1,22 +1,22 @@
 module.exports = (sequelize, Sequelize, DataTypes) => {
-  const Book = sequelize.define(
-    "Book", // Model name
+  const Category = sequelize.define(
+    "Category", // Model name
     {
       // Model attributes
       id: {
-        type: DataTypes.INTEGER,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
+        type: Sequelize.INTEGER,
       },
-      title: {
-        type: DataTypes.STRING,
+      name: {
+        type: Sequelize.STRING,
       },
-      author: {
-        type: DataTypes.STRING,
+      description: {
+        type: Sequelize.STRING,
       },
-      published: {
-        type: DataTypes.BOOLEAN,
+      icon_name: {
+        type: Sequelize.STRING,
       },
     },
     {
@@ -26,5 +26,5 @@ module.exports = (sequelize, Sequelize, DataTypes) => {
     }
   );
 
-  return Book;
+  return Category;
 };

@@ -1,22 +1,16 @@
 module.exports = (sequelize, Sequelize, DataTypes) => {
-  const Book = sequelize.define(
-    "Book", // Model name
+  const AccountType = sequelize.define(
+    "AccountType", // Model name
     {
       // Model attributes
       id: {
-        type: DataTypes.INTEGER,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
+        type: Sequelize.INTEGER,
       },
-      title: {
-        type: DataTypes.STRING,
-      },
-      author: {
-        type: DataTypes.STRING,
-      },
-      published: {
-        type: DataTypes.BOOLEAN,
+      name: {
+        type: Sequelize.STRING,
       },
     },
     {
@@ -26,5 +20,5 @@ module.exports = (sequelize, Sequelize, DataTypes) => {
     }
   );
 
-  return Book;
+  return AccountType;
 };
