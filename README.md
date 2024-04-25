@@ -1,4 +1,4 @@
-# REST API using Node.js, Express, Sequelize and MySQL + JWT Authentication and Authorization
+# MYCASHBACK 💰 - Aplicación de gestión de gastos personales
 
 ## Getting Started
 
