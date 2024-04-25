@@ -8,7 +8,7 @@
   - **Descripción:** Es un editor de código fuente gratuito, de código abierto y multiplataforma desarrollado por Microsoft. Este editor es capaz de adaptarse a cualquier lenguaje de programación.  
   - **Instalación:**  
       **1. Descarga Visual Studio Code:**
-      - Visita el sitio web oficial de Visual Studio Code en [code.visualstudio.com](https://code.visualstudio.com/).
+      - Visita el [sitio web oficial de Visual Studio Code] (https://code.visualstudio.com/).
       - Haz clic en el botón de descarga para Windows.
       
       **2. Instala Visual Studio Code:**  
@@ -29,8 +29,8 @@
       - Descomprime el archivo zip descargado en una ubicación de tu elección en tu sistema (De preferencia crear una carpeta en el disco C).
 
       **3. Configura las variables de entorno:**
-      - Abre el Panel de Control en tu sistema y selecciona "Sistema y seguridad" > "Sistema" > "Configuración avanzada del sistema".
-      - Haz clic en "Variables de entorno".
+      - Haz clic en el botón de "Inicio" en la esquina inferior izquierda de la pantalla.
+      - En el campo de búsqueda, escribe "Variables de entorno" y selecciona la opción que dice "Editar las variables de entorno del sistema" que aparece en los resultados de la búsqueda.
       - En la sección "Variables del sistema", selecciona la variable PATH y haz clic en "Editar".
       - Haz clic en "Nuevo" y agrega la ruta de la carpeta bin de Flutter que extrajiste anteriormente.
       - Haz clic en "Aceptar" para guardar los cambios.
@@ -48,7 +48,19 @@
       - Si estás utilizando Visual Studio Code, asegúrate de instalar la extensión de Flutter. Puedes hacerlo desde la pestaña de extensiones en VS Code buscando "Flutter".
 
 ### Android Studio
-Es un entorno de desarrollo (IDE) desarrollado por Google. Este IDE cuenta con un potente editor de códigos y varias funciones que nos permiten poder realizar el desarrollo de una aplicación de manera más productiva. Entre sus múltiples herramientas incluye un emulador de gran rapidez.
+   - **Descripción:** Es un entorno de desarrollo (IDE) desarrollado por Google. Este IDE cuenta con un potente editor de códigos y varias funciones que nos permiten poder realizar el desarrollo de una aplicación de manera más productiva. Entre sus múltiples herramientas incluye un emulador de gran rapidez.
+   - **Instalación:**  
+      **1. Descarga Android Studio:**  
+      - Visita el [sitio web oficial de Android Studio](developer.android.com/studio).
+      - Haz clic en el botón de descarga para Windows.  
+      - Una vez que se complete la descarga, haz doble clic en el archivo de instalación (.exe) descargado para ejecutar el instalador.
+
+      **2. Configura Android Studio:**  
+      - En el instalador de Android Studio, haz clic en "Siguiente" para comenzar la instalación.
+      - Selecciona los componentes que deseas instalar. Por lo general, se recomienda instalar todos los componentes por defecto.
+      - Selecciona la ubicación de instalación y haz clic en "Siguiente".
+      - Configura las opciones adicionales según tus preferencias y haz clic en "Instalar".
+
 
 
 ### MySQL
