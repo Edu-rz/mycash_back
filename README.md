@@ -218,7 +218,7 @@
 
 ## **Diagrama de Despliegue**
 
-
+![Diagrama de despliegue](/app/img/Diagramas/Diagrama%20de%20despliegue.PNG)
 
 ## **Diagrama de clases**
 ![Diagrama de clases](/app/img/Diagramas/Diagrama%20de%20clases.png)
