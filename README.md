@@ -170,6 +170,7 @@
 ### MySQL
 
 - **Descripción:** Es un sistema de gestión de bases de datos relacional de código abierto ampliamente utilizado en aplicaciones web y móviles. Ofrece un entorno robusto y confiable para almacenar y gestionar datos en forma de tablas relacionales, proporcionando soporte para consultas complejas utilizando el lenguaje estándar SQL.
+    ![***](/app/img/ConfiguraciónDelEntorno/MySql)
 
 ### Node.js
 
