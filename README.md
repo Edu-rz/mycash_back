@@ -7,6 +7,7 @@
 ### Visual Studio Code (VS Code)
   - **Descripción:** Es un editor de código fuente gratuito, de código abierto y multiplataforma desarrollado por Microsoft. Este editor es capaz de adaptarse a cualquier lenguaje de programación.  
   - **Instalación:**  
+
       **1. Descarga Visual Studio Code:**
       - Visita el [sitio web oficial de Visual Studio Code](https://code.visualstudio.com/). Haz clic en el botón de descarga para Windows.
 
@@ -15,7 +16,7 @@
       **2. Instala Visual Studio Code:**  
       - Una vez que se complete la descarga, haz doble clic en el archivo de instalación (.exe) descargado.  
 
-         ![Instalación VS Code 2](/app/img/ConfiguraciónDelEntorno/2_VS%20Code.png)
+         ![Instalación VS Code 2](/app/img/ConfiguraciónDelEntorno/2_VSCode.png)
 
       - Sigue las instrucciones del instalador para completar la instalación.
       
