@@ -219,12 +219,36 @@
 ## **Diagrama de Despliegue**
 
 
+
 ## **Diagrama de clases**
 ![Diagrama de clases](/app/img/Diagramas/Diagrama%20de%20clases.png)
 
 ## **Requerimientos No Funcionales**
 
+   - El sistema debe ser compatible para dispositivos móviles android
+   - El Front-End del sistema debe ser programado en el lenguaje de programación Dart.
+   - El Front-End del sistema debe ser programado utilizando el framework Flutter.
+   - El Back-End del sistema debe ser programado en Node.js
+   - El Back-End del sistema debe ser programado utilizando el framework Express.js
+   - El Back-End del sistema debe utilizar Sequelize como ORM
+   - El sistema debe utilizar Mysql como base de datos 
+   - El aplicativo móvil utilizará JWT para la autenticación de los usuarios.
+   - El aplicativo solo funcionará en orientación vertical.
+   - El aplicativo tendrá un comportamiento responsive y adaptable a los distintos tipos de pantallas de dispositivos móviles.
+
+
 ## **Requerimientos Funcionales**
+
+   - Como usuario, quiero poder crear una cuenta en la aplicación proporcionando los datos requeridos, para poder empezar a gestionar mis finanzas fácilmente.
+   - Como usuario, quiero poder iniciar sesión en la aplicación utilizando las credenciales con las que creé mi cuenta, para acceder rápidamente a mis datos financieros.
+   - Como usuario, deseo poder registrar fácilmente mis transacciones de ingreso, egreso y transferencia en cada una de mis cuentas, para mantener un seguimiento preciso de mis finanzas.
+   - Como usuario, quiero tener la posibilidad de crear más de una cuenta de ahorro en la aplicación, ingresando el nombre de la cuenta, el tipo de cuenta, el tipo de moneda y el saldo inicial, para organizar mejor mis diferentes fondos.
+   - Como usuario, quiero poder ver en detalle todas mis transacciones realizadas y filtrarlas por cuenta, para entender mejor mis hábitos de gasto y ahorro.
+   - Como usuario, quiero clasificar manualmente mis transacciones en categorías predefinidas como alimentación, transporte, etc., para poder analizar mis gastos de manera más específica.
+   - Como usuario, deseo poder visualizar en las estadísticas los gastos totales, desglosados por categoría y filtrado por tiempo, para identificar áreas en las que puedo mejorar mi manejo financiero.
+   - Como usuario, quiero poder ver un listado de todas las transacciones, desglosados por cuenta de ahorro,  para administrar mejor mis gastos.
+   - Como usuario, quiero poder crear objetivos que serán asignados a una categoría en específico y se encargará de realizar un seguimiento de los gastos en aquella categoría durante un rango de tiempo determinado, para administrar mejor mis gastos en cada categoría.
+
 
 ## **Descripción de casos de uso**
 
