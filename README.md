@@ -282,34 +282,20 @@
 ## **Descripción de casos de uso**
 
 ![Diagrama de casos de uso transacciones](/app/img/Diagramas/Casos%20de%20uso_Transacciones.PNG)
-<<<<<<< HEAD
+
 ### **Descripción** 
 Para la sección de Transacciones, el usuario puede gestionar las transacciones pudiendo visualizar los detalles de la transacción, eliminar la transacción, editar la transacción y crear la transacción; la cual puede ser un egreso, ingreso o transferencia. Las transacciones se pueden asignar a una categoria.
-=======
->>>>>>> c218bb6c7f74c8e58354a293a9a4545f3832c6fd
 
-### **Descripción**
 
 ![Diagrama de casos de uso Sesion](/app/img/Diagramas/Casos%20de%20Uso_Sesion.PNG)
-<<<<<<< HEAD
 ### **Descripción** 
 Los Usuarios puede gestionar la cuenta de usuario (Crear Cuenta, Editar Cuenta y eliminar cuenta), iniciar sesión, Gestionar cuenta de ahorro
-=======
-
-### **Descripción**
-
-![Diagrama de casos de uso Gestion Administrador](/app/img/Diagramas/Casos%20de%20Uso_Gestion%20Administrador.PNG)
->>>>>>> c218bb6c7f74c8e58354a293a9a4545f3832c6fd
 
 ### **Descripción**
 
 ![Diagrama de casos de uso Objetivos](/app/img/Diagramas/Casos%20de%20Uso_Objetivos.PNG)
-<<<<<<< HEAD
 ### **Descripción** 
 EL Usuario puede gestionar los objetivos, la cual se puede asociar a una categoría para poder realizar un seguimiento en los gastos de aquella categoría.
-=======
 
-### **Descripción**
->>>>>>> c218bb6c7f74c8e58354a293a9a4545f3832c6fd
 
 </div>
