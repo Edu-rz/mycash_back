@@ -252,13 +252,20 @@
 
 ## **Descripción de casos de uso**
 ![Diagrama de casos de uso transacciones](/app/img/Diagramas/Casos%20de%20uso_Transacciones.PNG)
+### **Descripción** 
+
+
 
 ![Diagrama de casos de uso Sesion](/app/img/Diagramas/Casos%20de%20Uso_Sesion.PNG)
+### **Descripción** 
+
 
 ![Diagrama de casos de uso Gestion Administrador](/app/img/Diagramas/Casos%20de%20Uso_Gestion%20Administrador.PNG)
+### **Descripción** 
+
 
 ![Diagrama de casos de uso Objetivos](/app/img/Diagramas/Casos%20de%20Uso_Objetivos.PNG)
-
+### **Descripción** 
 
 
 
