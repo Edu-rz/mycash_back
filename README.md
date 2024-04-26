@@ -109,7 +109,6 @@
 - **Descripción:** Es un framework que de código abierto desarrollado por Google. Proporciona un conjunto de herramientas, bibliotecas y recursos que permite crear aplicaciones nativas para móvil, web y escritorio a partir de un único código base. Utiliza el lenguaje de programación Dart que se ejecuta directamente en el navegador.
 - **Instalación:**  
    **1. Descarga Flutter:**
-
   - Visita el [sitio web oficial de Flutter](https://flutter.dev/docs/get-started/install). Haz clic en el icono de la plataforma donde trabajarás, en este caso Windows.
 
     ![Instalación Flutter 1](/app/img/ConfiguraciónDelEntorno/1_Flutter.png)
@@ -170,7 +169,41 @@
 ### MySQL
 
 - **Descripción:** Es un sistema de gestión de bases de datos relacional de código abierto ampliamente utilizado en aplicaciones web y móviles. Ofrece un entorno robusto y confiable para almacenar y gestionar datos en forma de tablas relacionales, proporcionando soporte para consultas complejas utilizando el lenguaje estándar SQL.
-    ![***](/app/img/ConfiguraciónDelEntorno/MySql)
+
+- **Instalación:**  
+  **1. Descarga MySQL:**
+   - Visita el sitio web oficial de MySQL en [dev.mysql.com](https://dev.mysql.com/downloads/mysql/).
+   - Descarga el instalador de MySQL Community Server para Windows.
+
+  **2. Ejecuta el Instalador:**
+   - Una vez que se complete la descarga, haz doble clic en el archivo de instalación (.msi) descargado para ejecutar el instalador de MySQL.
+
+  **3. Configura la Instalación:**
+   - En el instalador, selecciona "Developer Default" como tipo de instalación para instalar todos los componentes necesarios para el desarrollo.
+   - Haz clic en "Next" y luego en "Execute" para comenzar la instalación.
+
+  **4. Configura la Contraseña del Usuario Root:**
+   - Durante la instalación, se te pedirá que configures una contraseña para el usuario root de MySQL. Ingresa una contraseña segura y recuérdala para futuras configuraciones.
+
+  **5. Completa la Instalación:**
+   - Espera a que finalice la instalación de MySQL Server y haz clic en "Finish" para salir del instalador.
+
+  **6. Inicia MySQL Server:**
+   - Abre el Panel de Control de Windows y busca "Services" o "Servicios".
+   - Busca el servicio de MySQL Server en la lista y asegúrate de que esté iniciado. Si no lo está, haz clic derecho en él y selecciona "Start" o "Iniciar".
+
+  **7. Configura MySQL Workbench (opcional):**
+   - Si deseas utilizar una interfaz gráfica para administrar MySQL, descarga e instala MySQL Workbench desde el mismo sitio web de MySQL.
+   - Abre MySQL Workbench e ingresa la contraseña que configuraste durante la instalación para conectarte al servidor MySQL.
+
+  **8. Verifica la Instalación:**
+   - Abre una terminal (cmd o PowerShell) y ejecuta el siguiente comando para verificar que MySQL esté instalado correctamente:
+     ```
+     mysql -u root -p
+     ```
+   - Ingresa la contraseña del usuario root cuando se te solicite. Si puedes acceder a la línea de comandos de MySQL, significa que la instalación fue exitosa.
+
+      ![***](/app/img/ConfiguraciónDelEntorno/MySql.png)
 
 ### Node.js
 
