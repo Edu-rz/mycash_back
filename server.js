@@ -2,8 +2,9 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const config = require("./app/config/config.js");
-
 const app = express();
+const db = require("./app/models");
+const loadInitialData = require("./app/seeders/loadInitialData.js");
 
 const corsOptions = {
   origin: "http://localhost:8081"
@@ -18,9 +19,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // database
-const db = require("./app/models");
 const Role = db.role;
-db.sequelize.sync({force: true}).then(() => {
+db.sequelize.sync(
+  // {force: true}
+).then(() => {
+  // loadInitialData();
   // initial(); // Just use it in development, at the first time execution!. Delete it in production
 });
 
@@ -33,6 +36,7 @@ app.get("/", (req, res) => {
 require("./app/routes/book.routes")(app);
 require("./app/routes/auth.routes")(app);
 require("./app/routes/user.routes")(app);
+require("./app/routes/account.routes")(app);
 
 // set port, listen for requests
 const PORT = config.PORT;

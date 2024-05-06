@@ -31,7 +31,7 @@ db.books = require("./book.model.js")(sequelize, Sequelize, DataTypes);
 db.user = require("./user.model.js")(sequelize, Sequelize, DataTypes);
 db.role = require("./role.model.js")(sequelize, Sequelize, DataTypes);
 
-db.accountTypes = require("./role.model.js")(sequelize, Sequelize, DataTypes);
+// db.accountTypes = require("./accountType.model.js")(sequelize, Sequelize, DataTypes);
 db.categories = require("./category.model.js")(sequelize, Sequelize, DataTypes);
 db.currencyTypes = require("./currencyType.model.js")(sequelize, Sequelize, DataTypes);
 db.objectives = require("./objective.model.js")(sequelize, Sequelize, DataTypes);
@@ -51,9 +51,9 @@ db.user.belongsToMany(db.role, {
   otherKey: "role_id"
 });
 
-db.accountTypes.hasMany(db.accounts, {
-  foreignKey: "accountTypeId",
-});
+// db.accountTypes.hasMany(db.accounts, {
+//   foreignKey: "accountTypeId",
+// });
 
 db.user.hasMany(db.accounts, {
   foreignKey: "userId"
