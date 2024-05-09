@@ -24,7 +24,6 @@ db.sequelize.sync(
   // {force: true}
 ).then(() => {
   // loadInitialData();
-  // initial(); // Just use it in development, at the first time execution!. Delete it in production
 });
 
 // simple route

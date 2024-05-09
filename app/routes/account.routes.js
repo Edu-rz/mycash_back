@@ -11,7 +11,7 @@ module.exports = app => {
     // router.post("/", [authJwt.verifyToken], createAccountValidator, accountController.create);
   
     // Retrieve all my accounts
-    // router.get("/", [authJwt.verifyToken], accountController.findAll);
+    router.get("/", [authJwt.verifyToken], accountController.findAll);
   
     // Retrieve a single Account with id
     // router.get("/:id", [authJwt.verifyToken], accountController.findOne);

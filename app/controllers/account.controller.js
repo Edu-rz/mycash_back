@@ -33,16 +33,18 @@ exports.create = async (req, res) => {
 
 // Retrieve all Books from the database.
 exports.findAll = (req, res) => {
-  const title = req.query.title;
-  var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
+  // user Id
+  const userId = req.userId;
 
-  Book.findAll({ where: condition })
+  Account.findAll({ where: {
+    userId: userId,
+  } })
     .then((data) => {
       res.send(data);
     })
     .catch((err) => {
       res.send(500).send({
-        message: err.message || "Some error accurred while retrieving books.",
+        message: err.message || "Some error accurred while retrieving user's accounts.",
       });
     });
 };
