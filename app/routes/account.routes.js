@@ -13,14 +13,15 @@ module.exports = app => {
     // Retrieve all my accounts
     router.get("/", [authJwt.verifyToken], accountController.findAll);
   
+    // Delete an account
+    router.delete("/:id", [authJwt.verifyToken], accountController.delete);
+
     // Retrieve a single Account with id
     // router.get("/:id", [authJwt.verifyToken], accountController.findOne);
   
     // // Update a Book with id
     // router.put("/:id", accountController.update);
   
-    // // Delete a Book with id
-    // router.delete("/:id", accountController.delete);
   
     // // Delete all Books
     // router.delete("/", accountController.deleteAll);

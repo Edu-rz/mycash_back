@@ -35,15 +35,44 @@ exports.findAll = (req, res) => {
   // user Id
   const userId = req.userId;
 
-  Account.findAll({ where: {
-    userId: userId,
-  } })
+  Account.findAll({
+    where: {
+      userId: userId,
+    },
+  })
     .then((data) => {
       res.send(data);
     })
     .catch((err) => {
       res.send(500).send({
-        message: err.message || "Some error accurred while retrieving user's accounts.",
+        message:
+          err.message ||
+          "Some error accurred while retrieving user's accounts.",
+      });
+    });
+};
+
+// Delete a Book with the specified id in the request
+exports.delete = (req, res) => {
+  const id = req.params.id;
+
+  Account.destroy({
+    where: { id: id },
+  })
+    .then((num) => {
+      if (num == 1) {
+        res.send({
+          message: "Account was deleted successfully!",
+        });
+      } else {
+        res.send({
+          message: `Cannot delete Account with id=${id}. Maybe Account was not found!`,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Could not delete Account with id=" + id,
       });
     });
 };
@@ -84,31 +113,6 @@ exports.update = (req, res) => {
     .catch((err) => {
       res.status(500).send({
         message: "Error updating Book with id=" + id,
-      });
-    });
-};
-
-// Delete a Book with the specified id in the request
-exports.delete = (req, res) => {
-  const id = req.params.id;
-
-  Book.destroy({
-    where: { id: id },
-  })
-    .then((num) => {
-      if (num == 1) {
-        res.send({
-          message: "Book was deleted successfully!",
-        });
-      } else {
-        res.send({
-          message: `Cannot delete Book with id=${id}. Maybe Book was not found!`,
-        });
-      }
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: "Could not delete Book with id=" + id,
       });
     });
 };
