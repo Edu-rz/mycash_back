@@ -17,7 +17,6 @@ exports.create = async (req, res) => {
       balance: req.body.balance,
       currencyTypeId: req.body.currencyTypeId,
       userId: userId,
-      accountTypeId: req.body.accountTypeId,
     };
 
     // Save Book in database

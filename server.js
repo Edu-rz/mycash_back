@@ -6,11 +6,12 @@ const app = express();
 const db = require("./app/models");
 const loadInitialData = require("./app/seeders/loadInitialData.js");
 
-const corsOptions = {
-  origin: "http://localhost:8081"
-};
+// const corsOptions = {
+//   origin: "http://localhost:8081"
+// };
 
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
+app.use(cors());
 
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
