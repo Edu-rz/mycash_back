@@ -1,7 +1,7 @@
 const { validationResult } = require("express-validator");
 const db = require("../models");
-const Book = db.books;
 const Account = db.accounts;
+const CurrencyType = db.currencyTypes;
 const Op = db.Op;
 
 // Create and Save a new Account
@@ -30,7 +30,7 @@ exports.create = async (req, res) => {
   res.status(422).json({ errors: errors.array() });
 };
 
-// Retrieve all Books from the database.
+// Retrieve all accounts from the database.
 exports.findAll = (req, res) => {
   // user Id
   const userId = req.userId;
@@ -39,17 +39,19 @@ exports.findAll = (req, res) => {
     where: {
       userId: userId,
     },
+    include: [{ model: CurrencyType }], // Include the CurrencyType model
   })
     .then((data) => {
       res.send(data);
     })
     .catch((err) => {
-      res.send(500).send({
+      res.status(500).send({
         message:
           err.message ||
-          "Some error accurred while retrieving user's accounts.",
+          "Some error occurred while retrieving user's accounts.",
       });
     });
+
 };
 
 // Delete a Book with the specified id in the request
