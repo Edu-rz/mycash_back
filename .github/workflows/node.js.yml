@@ -23,7 +23,5 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - name: npm install, build, and test
-      run: |
-        npm ci
-        npm start &
+    - run: npm ci
+    - run: pm2 restart MyCash-Back
