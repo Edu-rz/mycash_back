@@ -3,7 +3,7 @@
 
 name: Node.js CI/CD
 env:
-  CI: false
+  CI: true
 
 on:
   push:
