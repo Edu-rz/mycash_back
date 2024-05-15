@@ -58,42 +58,58 @@ db.user.belongsToMany(db.role, {
 db.user.hasMany(db.accounts, {
   foreignKey: "userId"
 })
-db.accounts.belongsTo(db.user);
+db.accounts.belongsTo(db.user, {
+  foreignKey: "userId"
+});
 
 db.currencyTypes.hasMany(db.accounts, {
   foreignKey: "currencyTypeId",
 });
-db.accounts.belongsTo(db.currencyTypes);
+db.accounts.belongsTo(db.currencyTypes, {
+  foreignKey: "currencyTypeId",
+});
 
 db.categories.hasMany(db.objectives, {
   foreignKey: "categoryId",
 });
-db.objectives.belongsTo(db.categories);
+db.objectives.belongsTo(db.categories, {
+  foreignKey: "categoryId",
+});
 
 db.currencyTypes.hasMany(db.objectives, {
   foreignKey: "currencyTypeId",
 });
-db.objectives.belongsTo(db.currencyTypes);
+db.objectives.belongsTo(db.currencyTypes, {
+  foreignKey: "currencyTypeId",
+});
 
 db.user.hasMany(db.objectives, {
   foreignKey: 'userId'
 })
-db.objectives.belongsTo(db.user);
+db.objectives.belongsTo(db.user, {
+  foreignKey: 'userId'
+});
 
 db.currencyTypes.hasMany(db.transactions, {
   foreignKey: "currencyTypeId",
 });
-db.transactions.belongsTo(db.currencyTypes);
+db.transactions.belongsTo(db.currencyTypes, {
+  foreignKey: "currencyTypeId",
+});
 
 db.categories.hasMany(db.transactions, {
   foreignKey: "categoryId",
 });
-db.transactions.belongsTo(db.categories);
+db.transactions.belongsTo(db.categories, {
+  foreignKey: "categoryId",
+});
 
 db.accounts.hasMany(db.transactions, {
   foreignKey: 'accountId'
 })
-db.transactions.belongsTo(db.accounts);
+db.transactions.belongsTo(db.accounts, {
+  foreignKey: 'accountId'
+});
 
 
 db.ROLES = ["user", "admin", "moderator"];

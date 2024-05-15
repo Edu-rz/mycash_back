@@ -21,10 +21,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // database
 const Role = db.role;
-db.sequelize.sync(
-  // {force: true}
-).then(() => {
-  // loadInitialData();
+db.sequelize.sync({ force: true }).then(() => {
+  loadInitialData();
 });
 
 // simple route
@@ -44,21 +42,3 @@ const PORT = config.PORT;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-
-// Just use it in development, at the first time execution!. Delete it in production
-function initial() {
-  Role.create({
-    id: 1,
-    name: "user"
-  });
-
-  Role.create({
-    id: 2,
-    name: "moderator"
-  });
-
-  Role.create({
-    id: 3,
-    name: "admin"
-  });
-}

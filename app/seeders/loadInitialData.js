@@ -6,17 +6,17 @@ const CurrencyType = db.currencyTypes;
 
 async function seedRoles() {
   try {
-    Role.create({
+    Role.upsert({
       id: 1,
       name: "user",
     });
 
-    Role.create({
+    Role.upsert({
       id: 2,
       name: "moderator",
     });
 
-    Role.create({
+    Role.upsert({
       id: 3,
       name: "admin",
     });
@@ -28,14 +28,14 @@ async function seedRoles() {
 
 async function seedCategory() {
   try {
-    Category.create({
+    Category.upsert({
       id: 1,
       name: "Entrenamiento",
       description: "Gastos en actividades recreativas.",
       icon_name: "nose",
     });
 
-    Category.create({
+    Category.upsert({
       id: 2,
       name: "Transporte",
       description: "Gastos en bus, taxi, entre otros.",
@@ -50,7 +50,7 @@ async function seedCategory() {
 
 async function seedAccountType() {
   try {
-    AccountType.create({
+    AccountType.upsert({
       id: 1,
       name: "Efectivo",
     });
@@ -63,14 +63,14 @@ async function seedAccountType() {
 
 async function seedCurrencyType() {
   try {
-    CurrencyType.create({
+    CurrencyType.upsert({
       id: 1,
-      name: "Dollar",
+      name: "Dolar",
       short_name: "USD",
       symbol: "$",
       base_exchange_rate: 1,
     });
-    CurrencyType.create({
+    CurrencyType.upsert({
       id: 2,
       name: "Nuevo Sol",
       short_name: "PEN",
@@ -85,7 +85,7 @@ async function seedCurrencyType() {
 }
 
 const loadInitialData = async () => {
-  const seeders = [seedRoles, seedCategory, seedCurrencyType, seedAccountType ];
+  const seeders = [seedRoles, seedCategory, seedCurrencyType, seedAccountType];
 
   for (let seed of seeders) {
     await seed();
