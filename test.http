@@ -52,3 +52,32 @@ Content-Type: application/json
 
 ### Borrar objetivo
 DELETE http://localhost:3000/api/objectives/1
+
+### Crear nueva categoria
+POST http://localhost:3000/api/categories
+Content-Type: application/json
+
+{
+    "name": "Comida",
+    "description": "Gastos relacionados con la alimentación",
+    "icon_name": "food-icon"
+}
+
+### Obtener todas las categorías
+GET http://localhost:3000/api/categories
+
+### Obtener una categoría por su ID
+GET http://localhost:3000/api/categories/1
+
+### Actualizar una categoría por su ID
+PUT http://localhost:3000/api/categories/3
+Content-Type: application/json
+
+{
+    "name": "Nueva comida",
+    "description": "Gastos relacionados con la alimentación actualizada",
+    "icon_name": "updated-food-icon"
+}
+
+### Eliminar una categoría por su ID
+DELETE http://localhost:3000/api/categories/3
