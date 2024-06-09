@@ -1,0 +1,26 @@
+POST http://localhost:3000/api/objectives
+Content-Type: application/json
+
+{
+  "amount": 1000,
+  "start_date": "2023-06-01T00:00:00.000Z",
+  "deadline": "2023-12-31T00:00:00.000Z",
+  "userId": 1,
+  "categoryId": 1,
+  "currencyTypeId": 1
+}
+
+##########
+PUT http://localhost:3000/api/objectives/2
+Content-Type: application/json
+
+{
+  "amount": 1200,
+  "start_date": "2023-06-01T00:00:00.000Z",
+  "deadline": "2023-12-31T00:00:00.000Z",
+  "userId": 1,
+  "currencyTypeId": 1
+}
+
+##########
+DELETE http://localhost:3000/api/objectives/3

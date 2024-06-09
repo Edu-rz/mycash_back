@@ -10,7 +10,7 @@ const sequelize = new Sequelize(
     dialect: config.db.dialect,
     operatorsAliases: false,
 
-    poll: {
+    pool: {
       max: config.db.pool.max,
       min: config.db.pool.min,
       acquire: config.db.pool.acquire,

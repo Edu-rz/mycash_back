@@ -1,5 +1,5 @@
 module.exports = app => {
-  const objectiveController = require("../controllers/objective.controller.js");
+  const objectiveController = require("../controllers/objetive.controller");
 
   const router = require("express").Router();
 

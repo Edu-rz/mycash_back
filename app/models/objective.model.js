@@ -1,4 +1,3 @@
-//objetive.model.js
 module.exports = (sequelize, Sequelize, DataTypes) => {
   const Objective = sequelize.define(
     "Objective", // Model name
@@ -20,6 +19,9 @@ module.exports = (sequelize, Sequelize, DataTypes) => {
         type: Sequelize.DATE,
       },
       userId: {
+        type: Sequelize.INTEGER,
+      },
+      categoryId: {
         type: Sequelize.INTEGER,
       },
       currencyTypeId: {
