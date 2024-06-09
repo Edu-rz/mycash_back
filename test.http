@@ -1,26 +1,54 @@
+### Crear un nuevo usuario
+POST http://localhost:3000/api/auth/signup
+Content-Type: application/json
+
+{
+  "first_name": "John",
+  "last_name": "Doe",
+  "email": "john.doe@example.com",
+  "password": "securepassword",
+  "active": true
+}
+
+### Iniciar sesión (para obtener el token)
+POST http://localhost:3000/api/auth/signin
+Content-Type: application/json
+
+{
+  "email": "john.doe@example.com",
+  "password": "securepassword"
+}
+
+### Crear un nuevo objetivo
 POST http://localhost:3000/api/objectives
 Content-Type: application/json
 
 {
-  "amount": 1000,
-  "start_date": "2023-06-01T00:00:00.000Z",
-  "deadline": "2023-12-31T00:00:00.000Z",
+  "amount": 5000,
+  "start_date": "2024-06-01",
+  "deadline": "2024-12-31",
   "userId": 1,
-  "categoryId": 1,
-  "currencyTypeId": 1
+  "currencyTypeId": 1,
+  "icon_name": "objective-icon",
+  "color_name": "blue"
 }
 
-##########
-PUT http://localhost:3000/api/objectives/2
+### Obtener todos los objetivos
+GET http://localhost:3000/api/objectives
+
+### Editar objetivo
+PUT http://localhost:3000/api/objectives/1
 Content-Type: application/json
 
 {
   "amount": 1200,
-  "start_date": "2023-06-01T00:00:00.000Z",
-  "deadline": "2023-12-31T00:00:00.000Z",
+  "start_date": "2024-06-01",
+  "deadline": "2024-12-31",
   "userId": 1,
-  "currencyTypeId": 1
+  "currencyTypeId": 1,
+  "icon_name": "objective-icon",
+  "color_name": "red"
 }
 
-##########
-DELETE http://localhost:3000/api/objectives/3
+### Borrar objetivo
+DELETE http://localhost:3000/api/objectives/1

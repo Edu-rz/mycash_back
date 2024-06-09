@@ -69,13 +69,6 @@ db.accounts.belongsTo(db.currencyTypes, {
   foreignKey: "currencyTypeId",
 });
 
-db.categories.hasMany(db.objectives, {
-  foreignKey: "categoryId",
-});
-db.objectives.belongsTo(db.categories, {
-  foreignKey: "categoryId",
-});
-
 db.currencyTypes.hasMany(db.objectives, {
   foreignKey: "currencyTypeId",
 });

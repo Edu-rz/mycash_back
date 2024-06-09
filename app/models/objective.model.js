@@ -21,11 +21,14 @@ module.exports = (sequelize, Sequelize, DataTypes) => {
       userId: {
         type: Sequelize.INTEGER,
       },
-      categoryId: {
-        type: Sequelize.INTEGER,
-      },
       currencyTypeId: {
         type: Sequelize.INTEGER,
+      },
+      icon_name: {
+        type: Sequelize.STRING,
+      },
+      color_name: {
+        type: Sequelize.STRING,
       },
     },
     {
