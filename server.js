@@ -38,6 +38,7 @@ require("./app/routes/account.routes")(app);
 require("./app/routes/currencyType.routes.js")(app);
 require("./app/routes/objetive.routes.js")(app);
 require("./app/routes/category.routes.js")(app);
+require("./app/routes/transaction.routes.js")(app);
 
 // set port, listen for requests
 const PORT = config.PORT;
