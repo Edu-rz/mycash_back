@@ -19,7 +19,7 @@ exports.create = async (req, res) => {
       userId: userId,
     };
 
-    // Save Book in database
+    // Save Account in database
     const result = await Account.create(account);
 
     return res.status(200).json({
@@ -54,7 +54,6 @@ exports.findAll = (req, res) => {
 
 };
 
-// Delete a Book with the specified id in the request
 exports.delete = (req, res) => {
   const id = req.params.id;
 
@@ -79,65 +78,64 @@ exports.delete = (req, res) => {
     });
 };
 
-// Find a single Book with an id
 exports.findOne = (req, res) => {
   const id = req.params.id;
 
-  Book.findByPk(id)
+  Account.findByPk(id)
     .then((data) => {
       res.send(data);
     })
     .catch((err) => {
       res.status(500).send({
-        message: `Error retrieving Book with id = ${id}`,
+        message: `Error retrieving Account with id = ${id}`,
       });
     });
 };
 
-// Update a Book by the id in the request
+// Update a Account by the id in the request
 exports.update = (req, res) => {
   const id = req.params.id;
 
-  Book.update(req.body, {
+  Account.update(req.body, {
     where: { id: id },
   })
     .then((num) => {
       if (num == 1) {
         res.send({
-          message: "Book was updated successfully.",
+          message: "Account was updated successfully.",
         });
       } else {
         res.send({
-          message: `Cannot update Book with id=${id}. Maybe Book was not found or req.body is empty!`,
+          message: `Cannot update Account with id=${id}. Maybe Account was not found or req.body is empty!`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Error updating Book with id=" + id,
+        message: "Error updating Account with id=" + id,
       });
     });
 };
 
-// Delete all Books from the database.
+// Delete all Accounts from the database.
 exports.deleteAll = (req, res) => {
-  Book.destroy({
+  Account.destroy({
     where: {},
     truncate: false,
   })
     .then((nums) => {
-      res.send({ message: `${nums} Books were deleted successfully!` });
+      res.send({ message: `${nums} Accounts were deleted successfully!` });
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Some error occurred while removing all books.",
+        message: err.message || "Some error occurred while removing all accounts.",
       });
     });
 };
 
-// Find all published Books
+// Find all published Accounts
 exports.findAllPublished = (req, res) => {
-  Book.findAll({ where: { published: true } })
+  Account.findAll({ where: { published: true } })
     .then((data) => {
       res.send(data);
     })
