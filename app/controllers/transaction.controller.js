@@ -1,65 +1,121 @@
-const { Transaction } = require('../models'); // Ajusta la ruta según tu estructura de proyecto
+const db = require("../models");
+const Transaction = db.transactions;
 
-// Crear una nueva transacción
-exports.create = async (req, res) => {
-  try {
-    const transaction = await Transaction.create(req.body);
-    res.status(201).json(transaction);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
+// Create and Save a new transaction
+exports.create = (req, res) => {
+  // Create a transation
+  const transaction = {
+    type: req.body.type,
+    amount: req.body.amount,
+    exchange_rate: req.body.exchange_rate,
+    categoryId: req.body.categoryId,
+    accountId: req.body.accountId,
+    currencyTypeId: req.body.currencyTypeId
+  };
 
-// Obtener todas las transacciones
-exports.findAll = async (req, res) => {
-  try {
-    const transactions = await Transaction.findAll();
-    res.status(200).json(transactions);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-// Obtener una transacción por ID
-exports.findOne = async (req, res) => {
-  try {
-    const transaction = await Transaction.findByPk(req.params.id);
-    if (!transaction) {
-      return res.status(404).json({ message: 'Transaction not found' });
-    }
-    res.status(200).json(transaction);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-// Actualizar una transacción por ID
-exports.update = async (req, res) => {
-  try {
-    const [updated] = await Transaction.update(req.body, {
-      where: { id: req.params.id },
+  // Save transaction in database
+  Transaction.create(transaction)
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: err.message || "Some error occurred while creating the Transaction."
+      });
     });
-    if (updated) {
-      const updatedTransaction = await Transaction.findByPk(req.params.id);
-      return res.status(200).json(updatedTransaction);
-    }
-    throw new Error('Transaction not found');
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
 };
 
-// Eliminar una transacción por ID
-exports.delete = async (req, res) => {
-  try {
-    const deleted = await Transaction.destroy({
-      where: { id: req.params.id },
+// Retrieve all transactions from the database.
+exports.findAll = (req, res) => {
+    Transaction.findAll()
+      .then((data) => {
+        res.send(data);
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message: err.message || "Ocurrió un error al recuperar las transacciones.",
+        });
+      });
+  };
+  
+
+// Find a single transactions with an id
+exports.findOne = (req, res) => {
+  const id = req.params.id;
+
+  Transaction.findByPk(id)
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: `Error retrieving Transaction with id = ${id}`
+      });
     });
-    if (deleted) {
-      return res.status(204).send();
-    }
-    throw new Error('Transaction not found');
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
+};
+
+// Update a transactions by the id in the request
+exports.update = (req, res) => {
+  const id = req.params.id;
+
+  Transaction.update(req.body, {
+    where: { id: id }
+  })
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          message: "Transaction was updated successfully."
+        });
+      } else {
+        res.send({
+          message: `Cannot update Transaction with id=${id}. Maybe Transaction was not found or req.body is empty!`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Error updating Transaction with id=" + id
+      });
+    });
+};
+
+// Delete a Transaction with the specified id in the request
+exports.delete = (req, res) => {
+  const id = req.params.id;
+
+  Transaction.destroy({
+    where: { id: id }
+  })
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          message: "Transaction was deleted successfully!"
+        });
+      } else {
+        res.send({
+          message: `Cannot delete Transaction with id=${id}. Maybe Transaction was not found!`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Could not delete Transaction with id=" + id
+      });
+    });
+};
+
+// Delete all transactions from the database.
+exports.deleteAll = (req, res) => {
+    Transaction.destroy({
+    where: {},
+    truncate: false
+  })
+    .then(nums => {
+      res.send({ message: `${nums} Transactions were deleted successfully!` });
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: err.message || "Some error occurred while removing all transactions."
+      });
+    });
 };
