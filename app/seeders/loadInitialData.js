@@ -3,6 +3,7 @@ const Role = db.role;
 const Category = db.categories;
 const AccountType = db.accountTypes;
 const CurrencyType = db.currencyTypes;
+const Account = db.accounts;
 
 async function seedRoles() {
   try {

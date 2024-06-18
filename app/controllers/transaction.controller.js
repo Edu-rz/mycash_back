@@ -1,29 +1,70 @@
 const db = require("../models");
 const Transaction = db.transactions;
+const Account = db.accounts;
+const { validationResult } = require("express-validator");
+const transactionService = require("../services/transactionService");
 
 // Create and Save a new transaction
-exports.create = (req, res) => {
-  // Create a transation
-  const transaction = {
-    type: req.body.type,
-    amount: req.body.amount,
-    exchange_rate: req.body.exchange_rate,
-    categoryId: req.body.categoryId,
-    accountId: req.body.accountId,
-    currencyTypeId: req.body.currencyTypeId
-  };
+exports.create = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
 
-  // Save transaction in database
-  Transaction.create(transaction)
-    .then(data => {
-      res.send(data);
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: err.message || "Some error occurred while creating the Transaction."
-      });
+  const { amount, accountId, type, categoryId, currencyTypeId } = req.body;
+
+  try {
+    // Iniciar una transacción en la base de datos
+    const result = await db.sequelize.transaction(async (t) => {
+      // Encontrar la cuenta a la que se le va a realizar la transacción
+      const account = await Account.findByPk(accountId, { transaction: t });
+
+      if (!account) {
+        throw new Error("Cuenta no existe");
+      }
+
+      // Calcular el nuevo balance dependiendo del tipo de transacción
+      let newBalance;
+      if (type !== 'Ingreso') {
+        newBalance = parseFloat(account.balance) - parseFloat(amount);
+        if (newBalance < 0) {
+          throw new Error("Saldo insuficiente");
+        }
+      } else {
+        newBalance = parseFloat(account.balance) + parseFloat(amount);
+      }
+
+      // Actualizar el balance de la cuenta
+      account.balance = newBalance;
+      await account.save({ transaction: t });
+
+      // Crear la transacción
+      const transaction = await Transaction.create({
+        amount: amount,
+        accountId: accountId,
+        type: type,
+        categoryId: categoryId,
+        currencyTypeId: currencyTypeId,
+      }, { transaction: t });
+
+      return transaction;
     });
+
+    // Enviar la respuesta con éxito
+    return res.status(200).json({
+      message: "Transacción creada exitosamente",
+      transaction: result,
+    });
+
+  } catch (error) {
+    // Manejo de errores y envío de respuesta de error
+    return res.status(500).json({
+      message: error.message || "Ocurrió un error durante la creación de la transacción.",
+    });
+  }
 };
+
+
 
 // Retrieve all transactions from the database.
 exports.findAll = (req, res) => {
