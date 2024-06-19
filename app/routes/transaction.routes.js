@@ -20,7 +20,13 @@ module.exports = app => {
   
     // Eliminar todos los transactions
     router.delete("/", transactionController.deleteAll);
-  
+
+    router.get("/sumByMonth", transactionController.sumByMonth);
+
+    router.get("/incomeSumByCategory", transactionController.IncomeSumByCategory);
+
+    router.get("/expenseSumByCategory", transactionController.ExpenseSumByCategory);
+
     app.use("/api/transactions", router);
   };
   

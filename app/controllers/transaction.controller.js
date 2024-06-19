@@ -159,3 +159,56 @@ exports.deleteAll = (req, res) => {
       });
     });
 };
+
+exports.sumByMonth = async (req, res) => {
+  try{
+    const transaccions = await Transaction.findAll();
+
+    const sumByMonth = {};
+
+    transaccions.forEach(transaction => {
+      const date = new Date(transaction.createdAt);
+      const month = date.getMonth();
+      if (!sumByMonth[month]){
+        sumByMonth[month] = 0;
+      }
+
+      sumByMonth[month] += transaction.amount;
+    });
+
+    res,json(sumByMonth);
+  }catch(error){
+    console.error('Error al obtener la suma por mes: ', error);
+    
+  }
+};
+
+  exports.IncomeSumByCategory = async (req, res) => {
+    try{
+      const incomeSumByCategory = await Transaction.findAll({
+        attributes: ['categoryId', [db.sequelize.fn('SUM', db.sequelize.col('amount')), 'total']],
+        where: {
+          type: 'Ingreso'
+        },
+        group: ['categoryId']
+      });
+      res.json(incomeSumByCategory);
+    }catch(error){
+      console.error('Error al obtener la suma de ingresos por categoria', error);
+    }
+  };
+  
+  exports.ExpenseSumByCategory = async (req, res) => {
+    try{
+      const expenseSumByCategory = await Transaction.findAll({
+      attributes: ['categoryId', [db.sequelize.fn('SUM', db.sequelize.col('amount')), 'total']],
+      where: {
+        type: 'Egreso'
+      },
+      group: ['categoryId']
+    });
+    res.json(expenseSumByCategory);
+  }catch(error){
+    console.error('Error al obtener la suma de egresos por categoria', error);
+  }
+};
