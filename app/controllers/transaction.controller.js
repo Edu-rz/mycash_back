@@ -2,7 +2,6 @@ const db = require("../models");
 const Transaction = db.transactions;
 const Account = db.accounts;
 const { validationResult } = require("express-validator");
-const transactionService = require("../services/transactionService");
 
 // Create and Save a new transaction
 exports.create = async (req, res) => {

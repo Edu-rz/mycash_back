@@ -1,5 +1,8 @@
+@baseUrl = http://localhost:3000/api
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzE4NzY0MzA4fQ.J3jrtwe1fN5IEDqvCuy10at7E8jikERITy3rjrohnxA
+
 ### Crear un nuevo usuario
-POST http://localhost:3000/api/auth/signup
+POST {{baseUrl}}/auth/signup
 Content-Type: application/json
 
 {
@@ -11,7 +14,7 @@ Content-Type: application/json
 }
 
 ### Iniciar sesión (para obtener el token)
-POST http://localhost:3000/api/auth/signin
+POST {{baseUrl}}/auth/signin
 Content-Type: application/json
 
 {
@@ -19,81 +22,62 @@ Content-Type: application/json
   "password": "securepassword"
 }
 
-### Crear un nuevo objetivo
-POST http://localhost:3000/api/objectives
+### Crear un nuevo Objetivo
+POST {{baseUrl}}/objectives
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
-  "amount": 5000,
-  "start_date": "2024-06-01",
+  "target_amount": 2000,
+  "objective_name": "Objetivo de prueba 2",
+  "current_amount": 0,
+  "icon_name": "icon.png",
+  "color_name": "red",
+  "start_date": "2024-06-20",
   "deadline": "2024-12-31",
-  "userId": 1,
-  "currencyTypeId": 1,
-  "icon_name": "objective-icon",
-  "color_name": "blue"
+  "currencyTypeId": 1
 }
 
-### Obtener todos los objetivos
-GET http://localhost:3000/api/objectives
-
-### Editar objetivo
-PUT http://localhost:3000/api/objectives/1
+### Obtener todos los Objetivos del Usuario
+GET {{baseUrl}}/objectives
 Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### Obtener un Objetivo por id
+GET {{baseUrl}}/objectives/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### Actualizar un Objetivo por id
+PUT {{baseUrl}}/objectives/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
-  "amount": 1200,
-  "start_date": "2024-06-01",
-  "deadline": "2024-12-31",
-  "userId": 1,
-  "currencyTypeId": 1,
-  "icon_name": "objective-icon",
-  "color_name": "red"
+  "target_amount": 2000
 }
 
-### Borrar objetivo
-DELETE http://localhost:3000/api/objectives/1
-
-### Crear nueva categoria
-POST http://localhost:3000/api/categories
+### Eliminar un Objetivo por id
+DELETE {{baseUrl}}/objectives/2
 Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### Eliminar todos los Objetivos del Usuario
+DELETE {{baseUrl}}/objectives
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### Agregar monto al Objetivo por id
+PATCH {{baseUrl}}/objectives/1/monto
+Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
-    "name": "Comida",
-    "description": "Gastos relacionados con la alimentación",
-    "icon_name": "food-icon"
+  "monto": 100
 }
 
-### Obtener todas las categorías
-GET http://localhost:3000/api/categories
-
-### Obtener una categoría por su ID
-GET http://localhost:3000/api/categories/1
-
-### Actualizar una categoría por su ID
-PUT http://localhost:3000/api/categories/3
+### Ver el progreso de un Objetivo por id
+GET {{baseUrl}}/objectives/1/progreso
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
-{
-    "name": "Nueva comida",
-    "description": "Gastos relacionados con la alimentación actualizada",
-    "icon_name": "updated-food-icon"
-}
-
-### Eliminar una categoría por su ID
-DELETE http://localhost:3000/api/categories/3
-
-### Crear nueva cuenta
-
-
-### Crear nueva transacción
-POST http://localhost:3000/api/transactions
-Content-Type: application/json
-
-{
-    "type": "aaa",
-    "amount": 500,
-    "exchange_rate": 200,
-    "categoryId": 1,
-    "accountId": 1,
-    "currencyTypeId": 1 
-}

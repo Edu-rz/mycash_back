@@ -1,42 +1,82 @@
-module.exports = (sequelize, Sequelize, DataTypes) => {
+// Objective.model,js
+
+module.exports = (sequelize, DataTypes) => {
   const Objective = sequelize.define(
-    "Objective", // Model name
+    "Objective",
     {
-      // Model attributes
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: DataTypes.INTEGER,
       },
-      amount: {
-        type: Sequelize.FLOAT,
+      objective_name: {
+        type: DataTypes.STRING,
+        allowNull: false,
       },
-      start_date: {
-        type: Sequelize.DATE,
+      current_amount: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+        defaultValue: 0,
+        validate: {
+          min: 0,
+        },
       },
-      deadline: {
-        type: Sequelize.DATE,
-      },
-      userId: {
-        type: Sequelize.INTEGER,
-      },
-      currencyTypeId: {
-        type: Sequelize.INTEGER,
+      target_amount: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+        validate: {
+          min: 0,
+        },
       },
       icon_name: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
+        allowNull: true,
       },
       color_name: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      start_date: {
+        type: DataTypes.DATE,
+        allowNull: true,
+        defaultValue: DataTypes.NOW,
+      },
+      deadline: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
+      userId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Users', // Name of the referenced model
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+      },
+      currencyTypeId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'CurrencyTypes', // Name of the referenced model
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
       },
     },
     {
-      // Options
       timestamps: true,
-      underscrored: true,
+      underscored: true,
     }
   );
+
+  Objective.associate = (models) => {
+    Objective.belongsTo(models.User, { foreignKey: 'userId' });
+    Objective.belongsTo(models.CurrencyType, { foreignKey: 'currencyTypeId' });
+  };
 
   return Objective;
 };

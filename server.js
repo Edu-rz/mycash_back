@@ -31,12 +31,12 @@ app.get("/api/", (req, res) => {
 });
 
 // api routes
-require("./app/routes/book.routes")(app);
+//require("./app/routes/book.routes")(app);
 require("./app/routes/auth.routes")(app);
 require("./app/routes/user.routes")(app);
 require("./app/routes/account.routes")(app);
 require("./app/routes/currencyType.routes.js")(app);
-require("./app/routes/objetive.routes.js")(app);
+require("./app/routes/objective.routes.js")(app);
 require("./app/routes/category.routes.js")(app);
 require("./app/routes/transaction.routes.js")(app);
 
