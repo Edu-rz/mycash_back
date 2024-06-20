@@ -1,7 +1,9 @@
 const db = require("../models");
 const Transaction = db.transactions;
 const Account = db.accounts;
+const Category = db.categories;
 const { validationResult } = require("express-validator");
+const { Sequelize, Op } = require('sequelize');
 
 // Create and Save a new transaction
 exports.create = async (req, res) => {
@@ -160,55 +162,170 @@ exports.deleteAll = (req, res) => {
     });
 };
 
-exports.sumByMonth = async (req, res) => {
-  try{
-    const transaccions = await Transaction.findAll();
+exports.incomeSumByMonth = async (req, res) => {
+  try {
+    const now = new Date();
+    const sixMonthsAgo = new Date();
+    sixMonthsAgo.setMonth(now.getMonth() - 5); // Ajustar para incluir exactamente los últimos 6 meses
 
-    const sumByMonth = {};
-
-    transaccions.forEach(transaction => {
-      const date = new Date(transaction.createdAt);
-      const month = date.getMonth();
-      if (!sumByMonth[month]){
-        sumByMonth[month] = 0;
+    const incomeTransactions = await Transaction.findAll({
+      where: {
+        type: 'Ingreso',
+        createdAt: {
+          [Sequelize.Op.between]: [sixMonthsAgo, now]
+        }
       }
-
-      sumByMonth[month] += transaction.amount;
     });
 
-    res,json(sumByMonth);
-  }catch(error){
-    console.error('Error al obtener la suma por mes: ', error);
-    
+    const sumByMonth = {};
+    incomeTransactions.forEach(transaction => {
+      const date = new Date(transaction.createdAt);
+      const month = date.getMonth() + 1;
+      const year = date.getFullYear();
+      const monthYearKey = `${year}-${month}`;
+
+      if (!sumByMonth[monthYearKey]) {
+        sumByMonth[monthYearKey] = 0;
+      }
+
+      sumByMonth[monthYearKey] += transaction.amount;
+    });
+
+    // Llenar los meses sin transacciones con 0
+    const sixMonthsAgoYear = sixMonthsAgo.getFullYear();
+    const sixMonthsAgoMonth = sixMonthsAgo.getMonth() + 1;
+
+    for (let i = 0; i < 6; i++) {
+      const key = `${sixMonthsAgoYear}-${sixMonthsAgoMonth + i}`;
+      if (!(key in sumByMonth)) {
+        sumByMonth[key] = 0;
+      }
+    }
+
+    // Ordenar y recortar a los últimos 6 meses
+    const sortedMonths = Object.keys(sumByMonth).sort().slice(-6);
+    const result = {};
+    sortedMonths.forEach(month => {
+      result[month] = sumByMonth[month];
+    });
+
+    res.json(result);
+  } catch (error) {
+    console.error('Error al obtener la suma de ingresos por mes: ', error);
+    res.status(500).json({ message: 'Error al obtener la suma de ingresos por mes.' });
   }
 };
 
-  exports.IncomeSumByCategory = async (req, res) => {
-    try{
-      const incomeSumByCategory = await Transaction.findAll({
-        attributes: ['categoryId', [db.sequelize.fn('SUM', db.sequelize.col('amount')), 'total']],
-        where: {
-          type: 'Ingreso'
-        },
-        group: ['categoryId']
-      });
-      res.json(incomeSumByCategory);
-    }catch(error){
-      console.error('Error al obtener la suma de ingresos por categoria', error);
+exports.expenseSumByMonth = async (req, res) => {
+  try {
+    const now = new Date();
+    const sixMonthsAgo = new Date();
+    sixMonthsAgo.setMonth(now.getMonth() - 5); // Ajustar para incluir exactamente los últimos 6 meses
+
+    const expenseTransactions = await Transaction.findAll({
+      where: {
+        type: 'Egreso',
+        createdAt: {
+          [Sequelize.Op.between]: [sixMonthsAgo, now]
+        }
+      }
+    });
+
+    const sumByMonth = {};
+    expenseTransactions.forEach(transaction => {
+      const date = new Date(transaction.createdAt);
+      const month = date.getMonth() + 1;
+      const year = date.getFullYear();
+      const monthYearKey = `${year}-${month}`;
+
+      if (!sumByMonth[monthYearKey]) {
+        sumByMonth[monthYearKey] = 0;
+      }
+
+      sumByMonth[monthYearKey] += transaction.amount;
+    });
+
+    // Llenar los meses sin transacciones con 0
+    const sixMonthsAgoYear = sixMonthsAgo.getFullYear();
+    const sixMonthsAgoMonth = sixMonthsAgo.getMonth() + 1;
+
+    for (let i = 0; i < 6; i++) {
+      const key = `${sixMonthsAgoYear}-${sixMonthsAgoMonth + i}`;
+      if (!(key in sumByMonth)) {
+        sumByMonth[key] = 0;
+      }
     }
-  };
+
+    // Ordenar y recortar a los últimos 6 meses
+    const sortedMonths = Object.keys(sumByMonth).sort().slice(-6);
+    const result = {};
+    sortedMonths.forEach(month => {
+      result[month] = sumByMonth[month];
+    });
+
+    res.json(result);
+  } catch (error) {
+    console.error('Error al obtener la suma de egresos por mes: ', error);
+    res.status(500).json({ message: 'Error al obtener la suma de egresos por mes.' });
+  }
+};
+
+exports.IncomeSumByCategory = async (req, res) => {
+  try {
+    const incomeSumByCategory = await Transaction.findAll({
+      attributes: [
+        'categoryId',
+        [Sequelize.fn('SUM', Sequelize.col('amount')), 'total'],
+      ],
+      where: {
+        type: 'Ingreso', // Filtra solo los ingresos
+      },
+      group: ['categoryId'],
+      include: [
+        {
+          model: Category,
+          attributes: ['name'],
+        },
+      ],
+    });
+
+    if (incomeSumByCategory.length === 0) {
+      return res.status(404).json({ message: 'No se encontraron ingresos.' });
+    }
+
+    res.json(incomeSumByCategory);
+  } catch (error) {
+    console.error('Error al obtener la suma de ingresos por categoría:', error);
+    res.status(500).json({ message: 'Error al obtener la suma de ingresos por categoría.' });
+  }
+};
   
   exports.ExpenseSumByCategory = async (req, res) => {
-    try{
-      const expenseSumByCategory = await Transaction.findAll({
-      attributes: ['categoryId', [db.sequelize.fn('SUM', db.sequelize.col('amount')), 'total']],
-      where: {
-        type: 'Egreso'
-      },
-      group: ['categoryId']
-    });
-    res.json(expenseSumByCategory);
-  }catch(error){
-    console.error('Error al obtener la suma de egresos por categoria', error);
-  }
+    try {
+      const incomeSumByCategory = await Transaction.findAll({
+        attributes: [
+          'categoryId',
+          [Sequelize.fn('SUM', Sequelize.col('amount')), 'total'],
+        ],
+        where: {
+          type: 'Egreso', // Filtra solo los ingresos
+        },
+        group: ['categoryId'],
+        include: [
+          {
+            model: Category,
+            attributes: ['name'],
+          },
+        ],
+      });
+  
+      if (incomeSumByCategory.length === 0) {
+        return res.status(404).json({ message: 'No se encontraron ingresos.' });
+      }
+  
+      res.json(incomeSumByCategory);
+    } catch (error) {
+      console.error('Error al obtener la suma de ingresos por categoría:', error);
+      res.status(500).json({ message: 'Error al obtener la suma de ingresos por categoría.' });
+    }
 };
