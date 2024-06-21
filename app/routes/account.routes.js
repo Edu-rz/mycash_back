@@ -26,4 +26,6 @@ module.exports = app => {
   // router.delete("/", accountController.deleteAll);
 
   app.use("/api/accounts", router);
+
+  
 };

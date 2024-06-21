@@ -27,6 +27,12 @@ module.exports = (sequelize, Sequelize, DataTypes) => {
       currencyTypeId: {
         type: Sequelize.INTEGER,
       },
+      
+      profilePicture: { // Nuevo atributo para la foto de perfil
+        type: Sequelize.STRING,
+        defaultValue: "", // Puede tener un valor por defecto de cadena vacía
+        allowNull: true // Permite nulos en caso de que no se suba una imagen
+      },
     },
     {
       // Options

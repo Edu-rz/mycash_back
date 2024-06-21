@@ -1,29 +1,51 @@
-const { authJwt } = require("../middlewares");
-const controller = require("../controllers/user.controller");
+const express = require("express");
+const bodyParser = require("body-parser");
+const cors = require("cors");
+const config = require("./app/config/config.js");
+const app = express();
+const db = require("./app/models");
+const path = require('path');
+const loadInitialData = require("./app/seeders/loadInitialData.js");
 
-module.exports = function(app) {
-  app.use(function(req, res, next) {
-    res.header(
-      "Access-Control-Allow-Headers",
-      "x-access-token, Origin, Content-Type, Accept"
-    );
+// const corsOptions = {
+//   origin: "http://localhost:8081"
+// };
 
-    next();
-  });
+// app.use(cors(corsOptions));
+app.use(cors());
 
-  app.get("/api/test/all", controller.allAccess);
+// parse requests of content-type - application/json
+app.use(bodyParser.json());
 
-  app.get("/api/test/user", [authJwt.verifyToken], controller.userBoard);
+// parse requests of content-type - application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }));
 
-  app.get(
-    "/api/test/mod",
-    [authJwt.verifyToken, authJwt.isModerator],
-    controller.moderatorBoard
-  );
+// database
+const Role = db.role;
+db.sequelize.sync({ force: false }).then(() => {
+  loadInitialData();
+});
 
-  app.get(
-    "/api/test/admin",
-    [authJwt.verifyToken, authJwt.isAdmin],
-    controller.adminBoard
-  );
-};
+// simple route
+app.get("/api/", (req, res) => {
+  res.json({ message: "Hola pato 🦆" });
+});
+
+// Hacer que la carpeta uploads sea accesible públicamente
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// api routes
+//require("./app/routes/book.routes")(app);
+require("./app/routes/auth.routes")(app);
+require("./app/routes/user.routes")(app);
+require("./app/routes/account.routes")(app);
+require("./app/routes/currencyType.routes.js")(app);
+require("./app/routes/objective.routes.js")(app);
+require("./app/routes/category.routes.js")(app);
+require("./app/routes/transaction.routes.js")(app);
+
+// set port, listen for requests
+const PORT = config.PORT;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
