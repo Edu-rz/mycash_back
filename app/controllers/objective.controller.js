@@ -1,5 +1,7 @@
+const { where } = require("sequelize");
 const db = require("../models");
 const Objective = db.objectives;
+const CurrencyType = db.currencyTypes;
 
 // (1) Crear un nuevo Objetivo
 exports.create = (req, res) => {
@@ -41,7 +43,8 @@ exports.findAll = (req, res) => {
   const userId = req.userId; // Utiliza req.userId
 
   Objective.findAll({
-    where: { userId: userId }
+    where: { userId: userId },
+    include: [{model: CurrencyType}]
   })
     .then((data) => {
       res.send(data);

@@ -1,5 +1,5 @@
 @baseUrl = http://localhost:3000/api
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzE4NzY0MzA4fQ.J3jrtwe1fN5IEDqvCuy10at7E8jikERITy3rjrohnxA
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzE4OTM4MjA5fQ.J1YDRM1sTw8MVPMmWl6lsxaAGRaUIUPXNNQGokaoybo
 
 ### Crear un nuevo usuario
 POST {{baseUrl}}/auth/signup
