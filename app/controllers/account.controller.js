@@ -30,7 +30,7 @@ exports.create = async (req, res) => {
 exports.findAll = (req, res) => {
   // user Id
   const userId = req.userId;
-
+  console.log("ASDFASDFASDF " + userId)
   Account.findAll({
     where: {
       userId: userId,

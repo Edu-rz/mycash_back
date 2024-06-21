@@ -1,3 +1,5 @@
+const { authJwt } = require("../middlewares");
+
 module.exports = app => {
     const transactionController = require("../controllers/transaction.controller.js");
   
@@ -7,7 +9,7 @@ module.exports = app => {
     router.post("/", transactionController.create);
   
     // Obtener todos los transactions
-    router.get("/", transactionController.findAll);
+    router.get("/", [authJwt.verifyToken], transactionController.findAll);
   
     // Obtener un transaction por id
     router.get("/:id", transactionController.findOne);

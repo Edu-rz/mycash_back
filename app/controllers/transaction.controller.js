@@ -2,8 +2,9 @@ const db = require("../models");
 const Transaction = db.transactions;
 const Account = db.accounts;
 const Category = db.categories;
+const User = db.user;
 const { validationResult } = require("express-validator");
-const { Sequelize, Op } = require('sequelize');
+const { Sequelize, Op } = require("sequelize");
 
 // Create and Save a new transaction
 exports.create = async (req, res) => {
@@ -12,7 +13,7 @@ exports.create = async (req, res) => {
     return res.status(422).json({ errors: errors.array() });
   }
 
-  const { amount, accountId, type, categoryId, currencyTypeId } = req.body;
+  const { amount, accountId, categoryId, currencyTypeId } = req.body;
 
   try {
     // Iniciar una transacción en la base de datos
@@ -25,28 +26,22 @@ exports.create = async (req, res) => {
       }
 
       // Calcular el nuevo balance dependiendo del tipo de transacción
-      let newBalance;
-      if (type !== 'Ingreso') {
-        newBalance = parseFloat(account.balance) - parseFloat(amount);
-        if (newBalance < 0) {
-          throw new Error("Saldo insuficiente");
-        }
-      } else {
-        newBalance = parseFloat(account.balance) + parseFloat(amount);
-      }
+      let newBalance = parseFloat(account.balance) + parseFloat(amount);
 
       // Actualizar el balance de la cuenta
       account.balance = newBalance;
       await account.save({ transaction: t });
 
       // Crear la transacción
-      const transaction = await Transaction.create({
-        amount: amount,
-        accountId: accountId,
-        type: type,
-        categoryId: categoryId,
-        currencyTypeId: currencyTypeId,
-      }, { transaction: t });
+      const transaction = await Transaction.create(
+        {
+          amount: amount,
+          accountId: accountId,
+          categoryId: categoryId,
+          currencyTypeId: currencyTypeId,
+        },
+        { transaction: t }
+      );
 
       return transaction;
     });
@@ -56,42 +51,81 @@ exports.create = async (req, res) => {
       message: "Transacción creada exitosamente",
       transaction: result,
     });
-
   } catch (error) {
     // Manejo de errores y envío de respuesta de error
     return res.status(500).json({
-      message: error.message || "Ocurrió un error durante la creación de la transacción.",
+      message:
+        error.message ||
+        "Ocurrió un error durante la creación de la transacción.",
     });
   }
 };
 
-
-
-// Retrieve all transactions from the database.
+// Retrieve all transactions for a user
 exports.findAll = (req, res) => {
-    Transaction.findAll()
-      .then((data) => {
-        res.send(data);
-      })
-      .catch((err) => {
-        res.status(500).send({
-          message: err.message || "Ocurrió un error al recuperar las transacciones.",
-        });
-      });
+  const userId = req.userId;
+  const accountId = req.query.accountId;
+
+  const includeOptions = {
+    model: Account,
+    include: {
+      model: Transaction,
+    },
   };
-  
+
+  // If accountId is provided, add it to the where clause
+  if (accountId) {
+    includeOptions.where = { id: accountId };
+  }
+
+  User.findOne({
+    where: { id: userId },
+    include: includeOptions,
+  })
+    .then((user) => {
+      if (!user) {
+        return res.status(404).send({
+          message: `No se encontró el usuario con id=${userId}.`,
+        });
+      }
+
+      // Extract all transactions from the user's accounts
+      const transactions = user.Accounts.reduce((acc, account) => {
+        return acc.concat(account.Transactions);
+      }, []);
+
+      // Calculate the total amount of all transactions
+      const totalAmount = transactions.reduce((sum, transaction) => {
+        return sum + transaction.amount;
+      }, 0);
+
+      // Structure the response
+      const response = {
+        amount: totalAmount,
+        transacciones: transactions,
+      };
+
+      res.send(response);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message || "Ocurrió un error al recuperar las transacciones.",
+      });
+    });
+};
 
 // Find a single transactions with an id
 exports.findOne = (req, res) => {
   const id = req.params.id;
 
   Transaction.findByPk(id)
-    .then(data => {
+    .then((data) => {
       res.send(data);
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(500).send({
-        message: `Error retrieving Transaction with id = ${id}`
+        message: `Error retrieving Transaction with id = ${id}`,
       });
     });
 };
@@ -101,22 +135,22 @@ exports.update = (req, res) => {
   const id = req.params.id;
 
   Transaction.update(req.body, {
-    where: { id: id }
+    where: { id: id },
   })
-    .then(num => {
+    .then((num) => {
       if (num == 1) {
         res.send({
-          message: "Transaction was updated successfully."
+          message: "Transaction was updated successfully.",
         });
       } else {
         res.send({
-          message: `Cannot update Transaction with id=${id}. Maybe Transaction was not found or req.body is empty!`
+          message: `Cannot update Transaction with id=${id}. Maybe Transaction was not found or req.body is empty!`,
         });
       }
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(500).send({
-        message: "Error updating Transaction with id=" + id
+        message: "Error updating Transaction with id=" + id,
       });
     });
 };
@@ -126,38 +160,39 @@ exports.delete = (req, res) => {
   const id = req.params.id;
 
   Transaction.destroy({
-    where: { id: id }
+    where: { id: id },
   })
-    .then(num => {
+    .then((num) => {
       if (num == 1) {
         res.send({
-          message: "Transaction was deleted successfully!"
+          message: "Transaction was deleted successfully!",
         });
       } else {
         res.send({
-          message: `Cannot delete Transaction with id=${id}. Maybe Transaction was not found!`
+          message: `Cannot delete Transaction with id=${id}. Maybe Transaction was not found!`,
         });
       }
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(500).send({
-        message: "Could not delete Transaction with id=" + id
+        message: "Could not delete Transaction with id=" + id,
       });
     });
 };
 
 // Delete all transactions from the database.
 exports.deleteAll = (req, res) => {
-    Transaction.destroy({
+  Transaction.destroy({
     where: {},
-    truncate: false
+    truncate: false,
   })
-    .then(nums => {
+    .then((nums) => {
       res.send({ message: `${nums} Transactions were deleted successfully!` });
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(500).send({
-        message: err.message || "Some error occurred while removing all transactions."
+        message:
+          err.message || "Some error occurred while removing all transactions.",
       });
     });
 };
@@ -170,15 +205,15 @@ exports.incomeSumByMonth = async (req, res) => {
 
     const incomeTransactions = await Transaction.findAll({
       where: {
-        type: 'Ingreso',
+        type: "Ingreso",
         createdAt: {
-          [Sequelize.Op.between]: [sixMonthsAgo, now]
-        }
-      }
+          [Sequelize.Op.between]: [sixMonthsAgo, now],
+        },
+      },
     });
 
     const sumByMonth = {};
-    incomeTransactions.forEach(transaction => {
+    incomeTransactions.forEach((transaction) => {
       const date = new Date(transaction.createdAt);
       const month = date.getMonth() + 1;
       const year = date.getFullYear();
@@ -205,14 +240,16 @@ exports.incomeSumByMonth = async (req, res) => {
     // Ordenar y recortar a los últimos 6 meses
     const sortedMonths = Object.keys(sumByMonth).sort().slice(-6);
     const result = {};
-    sortedMonths.forEach(month => {
+    sortedMonths.forEach((month) => {
       result[month] = sumByMonth[month];
     });
 
     res.json(result);
   } catch (error) {
-    console.error('Error al obtener la suma de ingresos por mes: ', error);
-    res.status(500).json({ message: 'Error al obtener la suma de ingresos por mes.' });
+    console.error("Error al obtener la suma de ingresos por mes: ", error);
+    res
+      .status(500)
+      .json({ message: "Error al obtener la suma de ingresos por mes." });
   }
 };
 
@@ -224,15 +261,15 @@ exports.expenseSumByMonth = async (req, res) => {
 
     const expenseTransactions = await Transaction.findAll({
       where: {
-        type: 'Egreso',
+        type: "Egreso",
         createdAt: {
-          [Sequelize.Op.between]: [sixMonthsAgo, now]
-        }
-      }
+          [Sequelize.Op.between]: [sixMonthsAgo, now],
+        },
+      },
     });
 
     const sumByMonth = {};
-    expenseTransactions.forEach(transaction => {
+    expenseTransactions.forEach((transaction) => {
       const date = new Date(transaction.createdAt);
       const month = date.getMonth() + 1;
       const year = date.getFullYear();
@@ -259,14 +296,16 @@ exports.expenseSumByMonth = async (req, res) => {
     // Ordenar y recortar a los últimos 6 meses
     const sortedMonths = Object.keys(sumByMonth).sort().slice(-6);
     const result = {};
-    sortedMonths.forEach(month => {
+    sortedMonths.forEach((month) => {
       result[month] = sumByMonth[month];
     });
 
     res.json(result);
   } catch (error) {
-    console.error('Error al obtener la suma de egresos por mes: ', error);
-    res.status(500).json({ message: 'Error al obtener la suma de egresos por mes.' });
+    console.error("Error al obtener la suma de egresos por mes: ", error);
+    res
+      .status(500)
+      .json({ message: "Error al obtener la suma de egresos por mes." });
   }
 };
 
@@ -274,58 +313,62 @@ exports.IncomeSumByCategory = async (req, res) => {
   try {
     const incomeSumByCategory = await Transaction.findAll({
       attributes: [
-        'categoryId',
-        [Sequelize.fn('SUM', Sequelize.col('amount')), 'total'],
+        "categoryId",
+        [Sequelize.fn("SUM", Sequelize.col("amount")), "total"],
       ],
       where: {
-        type: 'Ingreso', // Filtra solo los ingresos
+        type: "Ingreso", // Filtra solo los ingresos
       },
-      group: ['categoryId'],
+      group: ["categoryId"],
       include: [
         {
           model: Category,
-          attributes: ['name'],
+          attributes: ["name"],
         },
       ],
     });
 
     if (incomeSumByCategory.length === 0) {
-      return res.status(404).json({ message: 'No se encontraron ingresos.' });
+      return res.status(404).json({ message: "No se encontraron ingresos." });
     }
 
     res.json(incomeSumByCategory);
   } catch (error) {
-    console.error('Error al obtener la suma de ingresos por categoría:', error);
-    res.status(500).json({ message: 'Error al obtener la suma de ingresos por categoría.' });
+    console.error("Error al obtener la suma de ingresos por categoría:", error);
+    res
+      .status(500)
+      .json({ message: "Error al obtener la suma de ingresos por categoría." });
   }
 };
-  
-  exports.ExpenseSumByCategory = async (req, res) => {
-    try {
-      const incomeSumByCategory = await Transaction.findAll({
-        attributes: [
-          'categoryId',
-          [Sequelize.fn('SUM', Sequelize.col('amount')), 'total'],
-        ],
-        where: {
-          type: 'Egreso', // Filtra solo los ingresos
+
+exports.ExpenseSumByCategory = async (req, res) => {
+  try {
+    const incomeSumByCategory = await Transaction.findAll({
+      attributes: [
+        "categoryId",
+        [Sequelize.fn("SUM", Sequelize.col("amount")), "total"],
+      ],
+      where: {
+        type: "Egreso", // Filtra solo los ingresos
+      },
+      group: ["categoryId"],
+      include: [
+        {
+          model: Category,
+          attributes: ["name"],
         },
-        group: ['categoryId'],
-        include: [
-          {
-            model: Category,
-            attributes: ['name'],
-          },
-        ],
-      });
-  
-      if (incomeSumByCategory.length === 0) {
-        return res.status(404).json({ message: 'No se encontraron ingresos.' });
-      }
-  
-      res.json(incomeSumByCategory);
-    } catch (error) {
-      console.error('Error al obtener la suma de ingresos por categoría:', error);
-      res.status(500).json({ message: 'Error al obtener la suma de ingresos por categoría.' });
+      ],
+    });
+
+    if (incomeSumByCategory.length === 0) {
+      return res.status(404).json({ message: "No se encontraron ingresos." });
     }
+
+    res.json(incomeSumByCategory);
+  } catch (error) {
+    console.error("Error al obtener la suma de ingresos por categoría:", error);
+    res
+      .status(500)
+      .json({ message: "Error al obtener la suma de ingresos por categoría." });
+  }
 };
