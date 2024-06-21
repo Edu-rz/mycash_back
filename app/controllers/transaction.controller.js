@@ -3,6 +3,7 @@ const Transaction = db.transactions;
 const Account = db.accounts;
 const Category = db.categories;
 const User = db.user;
+const CurrencyType = db.currencyTypes;
 const { validationResult } = require("express-validator");
 const { Sequelize, Op } = require("sequelize");
 
@@ -13,20 +14,35 @@ exports.create = async (req, res) => {
     return res.status(422).json({ errors: errors.array() });
   }
 
-  const { amount, accountId, categoryId, currencyTypeId } = req.body;
+  const { amount, accountId, categoryId, currencyTypeId, exchange_rate } = req.body;
 
   try {
     // Iniciar una transacción en la base de datos
     const result = await db.sequelize.transaction(async (t) => {
       // Encontrar la cuenta a la que se le va a realizar la transacción
-      const account = await Account.findByPk(accountId, { transaction: t });
+      const account = await Account.findByPk(accountId, {
+        include: [{ model: CurrencyType }],
+        transaction: t
+      });
 
       if (!account) {
         throw new Error("Cuenta no existe");
       }
 
-      // Calcular el nuevo balance dependiendo del tipo de transacción
-      let newBalance = parseFloat(account.balance) + parseFloat(amount);
+      // Obtener el tipo de cambio de la cuenta
+      const accountCurrencyType = account.CurrencyType;
+
+      // Calcular el monto en la moneda de la cuenta
+      let amountInAccountCurrency = amount;
+      if (accountCurrencyType.id !== currencyTypeId) {
+        if (!exchange_rate || exchange_rate <= 0) {
+          throw new Error("Tipo de cambio inválido");
+        }
+        amountInAccountCurrency = amount * exchange_rate;
+      }
+
+      // Calcular el nuevo balance de la cuenta
+      let newBalance = parseFloat(account.balance) + parseFloat(amountInAccountCurrency);
 
       // Actualizar el balance de la cuenta
       account.balance = newBalance;
@@ -39,6 +55,7 @@ exports.create = async (req, res) => {
           accountId: accountId,
           categoryId: categoryId,
           currencyTypeId: currencyTypeId,
+          exchange_rate: exchange_rate,
         },
         { transaction: t }
       );
