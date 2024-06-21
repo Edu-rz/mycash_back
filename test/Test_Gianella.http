@@ -1,6 +1,5 @@
 @baseUrl = http://localhost:3000/api
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzE4OTM4MjA5fQ.J1YDRM1sTw8MVPMmWl6lsxaAGRaUIUPXNNQGokaoybo
-
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzE4OTQzMDY4fQ._1MQznsxq49tCagUgC15bRDPfGiapS4KRjMpB55Aljw
 ### Crear un nuevo usuario
 POST {{baseUrl}}/auth/signup
 Content-Type: application/json
@@ -28,12 +27,11 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "target_amount": 2000,
-  "objective_name": "Objetivo de prueba 2",
+  "target_amount": 3500,
+  "objective_name": "Prueba Presentación",
   "current_amount": 0,
   "icon_name": "icon.png",
-  "color_name": "red",
-  "start_date": "2024-06-20",
+  "color_name": "blue",
   "deadline": "2024-12-31",
   "currencyTypeId": 1
 }
@@ -54,11 +52,16 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "target_amount": 2000
+  "target_amount": 5000,
+  "objective_name": "Hola",
+  "icon_name": "hi",
+  "color_name": "red",
+  "deadline": "2024-12-31",
+  "currencyTypeId": 1
 }
 
 ### Eliminar un Objetivo por id
-DELETE {{baseUrl}}/objectives/2
+DELETE {{baseUrl}}/objectives/1
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
