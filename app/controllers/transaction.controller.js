@@ -389,3 +389,77 @@ exports.ExpenseSumByCategory = async (req, res) => {
       .json({ message: "Error al obtener la suma de ingresos por categoría." });
   }
 };
+
+// Método para transferir fondos entre cuentas
+exports.transfer = async (req, res) => {
+  const { fromAccountId, toAccountId, amount } = req.body;
+  
+  // Validación inicial de la entrada
+  if (!fromAccountId || !toAccountId || !amount) {
+    return res.status(400).json({ message: "Datos incompletos para la transferencia." });
+  }
+
+  if (amount <= 0) {
+    return res.status(400).json({ message: "El monto de la transferencia debe ser mayor a cero." });
+  }
+
+  try {
+    const result = await db.sequelize.transaction(async (t) => {
+      // Obtener la cuenta de origen
+      const fromAccount = await Account.findByPk(fromAccountId, { transaction: t });
+      if (!fromAccount) {
+        throw new Error("La cuenta de origen no existe.");
+      }
+
+      // Obtener la cuenta de destino
+      const toAccount = await Account.findByPk(toAccountId, { transaction: t });
+      if (!toAccount) {
+        throw new Error("La cuenta de destino no existe.");
+      }
+
+      // Verificar que la cuenta de origen tiene suficiente saldo
+      if (fromAccount.balance < amount) {
+        throw new Error("Saldo insuficiente en la cuenta de origen para la transferencia.");
+      }
+
+      // Actualizar el saldo de la cuenta de origen
+      fromAccount.balance -= amount;
+      await fromAccount.save({ transaction: t });
+
+      // Actualizar el saldo de la cuenta de destino
+      toAccount.balance += amount;
+      await toAccount.save({ transaction: t });
+
+      // Crear la transacción de salida en la cuenta de origen
+      const outgoingTransaction = await Transaction.create({
+        amount: -amount,
+        accountId: fromAccountId,
+        categoryId: null, // Supongamos que es una transferencia sin categoría
+        currencyTypeId: fromAccount.currencyTypeId, // Asumimos misma moneda para simplificar
+        exchange_rate: 1 // No hay conversión de moneda
+      }, { transaction: t });
+
+      // Crear la transacción de entrada en la cuenta de destino
+      const incomingTransaction = await Transaction.create({
+        amount: amount,
+        accountId: toAccountId,
+        categoryId: null, // Supongamos que es una transferencia sin categoría
+        currencyTypeId: toAccount.currencyTypeId, // Asumimos misma moneda para simplificar
+        exchange_rate: 1 // No hay conversión de moneda
+      }, { transaction: t });
+
+      return { outgoingTransaction, incomingTransaction };
+    });
+
+    // Enviar la respuesta con éxito
+    return res.status(200).json({
+      message: "Transferencia realizada con éxito",
+      transactions: result
+    });
+  } catch (error) {
+    // Manejo de errores y envío de respuesta de error
+    return res.status(500).json({
+      message: error.message || "Ocurrió un error durante la transferencia."
+    });
+  }
+};

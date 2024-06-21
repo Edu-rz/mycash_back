@@ -31,6 +31,8 @@ module.exports = app => {
 
     router.get("/expenseSum/ByCategory", transactionController.ExpenseSumByCategory);
 
+    router.post("/transfer/waza", transactionController.transfer);
+
     app.use("/api/transactions", router);
   };
   
