@@ -35,5 +35,12 @@ module.exports = (sequelize, Sequelize, DataTypes) => {
     }
   );
 
+  Transaction.associate = models => {
+    Transaction.belongsTo(models.Category, {
+      foreignKey: 'categoryId',
+      as: 'category'
+    });
+  };
+
   return Transaction;
 };
