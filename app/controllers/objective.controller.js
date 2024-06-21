@@ -1,5 +1,7 @@
+const { where } = require("sequelize");
 const db = require("../models");
 const Objective = db.objectives;
+const CurrencyType = db.currencyTypes;
 
 // (1) Crear un nuevo Objetivo
 exports.create = (req, res) => {
@@ -18,7 +20,6 @@ exports.create = (req, res) => {
     target_amount: req.body.target_amount,
     icon_name: req.body.icon_name,
     color_name: req.body.color_name,
-    start_date: req.body.start_date,
     deadline: req.body.deadline,
     userId: req.userId, // Asegúrate de utilizar req.userId
     currencyTypeId: req.body.currencyTypeId,
@@ -41,7 +42,8 @@ exports.findAll = (req, res) => {
   const userId = req.userId; // Utiliza req.userId
 
   Objective.findAll({
-    where: { userId: userId }
+    where: { userId: userId },
+    include: [{model: CurrencyType}]
   })
     .then((data) => {
       res.send(data);
@@ -62,7 +64,8 @@ exports.findOne = (req, res) => {
     where: {
       id: id,
       userId: userId
-    }
+    },
+    include: [{model: CurrencyType}]
   })
     .then((data) => {
       if (data) {
@@ -91,7 +94,6 @@ exports.update = (req, res) => {
     target_amount: req.body.target_amount,
     icon_name: req.body.icon_name,
     color_name: req.body.color_name,
-    start_date: req.body.start_date,
     deadline: req.body.deadline,
     currencyTypeId: req.body.currencyTypeId,
   };
@@ -101,7 +103,8 @@ exports.update = (req, res) => {
     where: {
       id: id,
       userId: userId
-    }
+    },
+    include: [{model: CurrencyType}]
   })
     .then((objective) => {
       if (!objective) {
