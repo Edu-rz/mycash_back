@@ -602,5 +602,79 @@ Authorization: Bearer {{token}}
 
 ## Hoja de Peticiones para la prueba del EndPoint Transacciones
 ```
+@baseUrl = http://localhost:3000/api
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzE4OTQ5MzMyfQ.vXW_BoWAm5eCc8dJ61fJ3Kjg8VwZzb3L0M9-gs4QRAw
 
-```
+### Crear Usuario
+POST {{baseUrl}}/auth/signup
+Content-Type: application/json
+
+{
+  "email": "root@gmail.com",
+  "password": "12345678"
+}
+
+### Iniciar Sesión
+POST {{baseUrl}}/auth/signin
+Content-Type: application/json
+
+{
+  "email": "root@gmail.com",
+  "password": "12345678"
+}
+
+### Crear Cuenta
+POST {{baseUrl}}/accounts
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "name": "NuevoPlin",
+  "balance": 2000,
+  "currencyTypeId": 1,
+  "accountTypeId": 1
+}
+
+### Obtener Cuentas
+GET {{baseUrl}}/accounts
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### Crear Transacción
+POST {{baseUrl}}/transactions
+Content-Type: application/json
+
+{
+  "amount": 600,
+  "accountId": 1,
+  "categoryId": 1, 
+  "currencyTypeId": 1
+}
+
+### Obtener Transacciones
+GET {{baseUrl}}/transactions
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### Obtener una transacción por ID
+GET {{baseUrl}}/transactions/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### Editar Transacción
+PUT {{baseUrl}}/transactions/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "amount": 123,
+  "accountId": 1,
+  "categoryId": 1, 
+  "currencyTypeId": 1
+}
+
+### Eliminar Transacción
+DELETE {{baseUrl}}/transactions/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+``` 
