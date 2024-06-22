@@ -599,3 +599,8 @@ GET {{baseUrl}}/objectives/1/progreso
 Content-Type: application/json
 Authorization: Bearer {{token}}
 ```
+
+## Hoja de Peticiones para la prueba del EndPoint Transacciones
+```
+
+```
