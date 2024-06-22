@@ -510,3 +510,92 @@ Se puede visualizar nuestro mockup completo en la siguiente [página de figma](h
     "ref": "OBeydYiaNQVmvutR1_RD-0Pe7BiTJ0aTS4BqhtgxLPzP-zX2tOgg3U4f_lSjtThemLegAR5FCVjs6idOfldTCg"
 }
 ```
+
+## Hoja de Peticiones para la prueba del EndPoint Objetivo
+```
+@baseUrl = http://localhost:3000/api
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzE4OTQzMDY4fQ._1MQznsxq49tCagUgC15bRDPfGiapS4KRjMpB55Aljw
+### Crear un nuevo usuario
+POST {{baseUrl}}/auth/signup
+Content-Type: application/json
+
+{
+  "first_name": "John",
+  "last_name": "Doe",
+  "email": "john.doe@example.com",
+  "password": "securepassword",
+  "active": true
+}
+
+### Iniciar sesión (para obtener el token)
+POST {{baseUrl}}/auth/signin
+Content-Type: application/json
+
+{
+  "email": "john.doe@example.com",
+  "password": "securepassword"
+}
+
+### Crear un nuevo Objetivo
+POST {{baseUrl}}/objectives
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "target_amount": 3500,
+  "objective_name": "Prueba Presentación",
+  "current_amount": 0,
+  "icon_name": "icon.png",
+  "color_name": "blue",
+  "deadline": "2024-12-31",
+  "currencyTypeId": 1
+}
+
+### Obtener todos los Objetivos del Usuario
+GET {{baseUrl}}/objectives
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### Obtener un Objetivo por id
+GET {{baseUrl}}/objectives/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### Actualizar un Objetivo por id
+PUT {{baseUrl}}/objectives/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "target_amount": 5000,
+  "objective_name": "Hola",
+  "icon_name": "hi",
+  "color_name": "red",
+  "deadline": "2024-12-31",
+  "currencyTypeId": 1
+}
+
+### Eliminar un Objetivo por id
+DELETE {{baseUrl}}/objectives/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### Eliminar todos los Objetivos del Usuario
+DELETE {{baseUrl}}/objectives
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### Agregar monto al Objetivo por id
+PATCH {{baseUrl}}/objectives/1/monto
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "monto": 100
+}
+
+### Ver el progreso de un Objetivo por id
+GET {{baseUrl}}/objectives/1/progreso
+Content-Type: application/json
+Authorization: Bearer {{token}}
+```
