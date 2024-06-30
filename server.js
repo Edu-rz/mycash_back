@@ -4,6 +4,7 @@ const cors = require("cors");
 const config = require("./app/config/config.js");
 const app = express();
 const db = require("./app/models");
+const path = require('path');
 const loadInitialData = require("./app/seeders/loadInitialData.js");
 
 // const corsOptions = {
@@ -29,6 +30,9 @@ db.sequelize.sync({ force: false }).then(() => {
 app.get("/api/", (req, res) => {
   res.json({ message: "Hola pato 🦆" });
 });
+
+// Hacer que la carpeta uploads sea accesible públicamente
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // api routes
 //require("./app/routes/book.routes")(app);

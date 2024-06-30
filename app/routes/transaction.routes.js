@@ -34,5 +34,6 @@ module.exports = app => {
     router.post("/transfer/waza", transactionController.transfer);
 
     app.use("/api/transactions", router);
+
   };
   

@@ -29,6 +29,10 @@ module.exports = (sequelize, Sequelize, DataTypes) => {
       active: {
         type: Sequelize.BOOLEAN,
       },
+      profile_picture: {
+        type: DataTypes.STRING, // Usaremos una cadena para almacenar la URL o ruta de la imagen
+        allowNull: true,
+      },
     },
     {
       // Options

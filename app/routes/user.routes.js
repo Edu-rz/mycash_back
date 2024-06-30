@@ -26,4 +26,11 @@ module.exports = function(app) {
     [authJwt.verifyToken, authJwt.isAdmin],
     controller.adminBoard
   );
+
+  // Ruta para subir la foto de perfil
+  app.post(
+    "/api/user/profile-picture",
+    [authJwt.verifyToken],
+    controller.uploadProfilePicture
+  );
 };

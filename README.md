@@ -363,3 +363,318 @@ Se puede visualizar nuestro mockup completo en la siguiente [página de figma](h
 ![***](/app/img/Mockup/Figma.png)
 
 </div>
+
+# **Endpoints**
+```
+{
+    "clientName": "Thunder Client",
+    "collectionName": "PROGRA MOVIL",
+    "collectionId": "4c017bdf-7fed-4fcc-ae90-cf65896b05dc",
+    "dateExported": "2024-06-21T12:37:39.369Z",
+    "version": "1.2",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "2a471968-a6ec-46f3-9d1c-8fcc9d075f78",
+            "colId": "4c017bdf-7fed-4fcc-ae90-cf65896b05dc",
+            "containerId": "",
+            "name": "http://localhost:3000/api/transactions",
+            "url": "http://localhost:3000/api/transactions",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2024-06-21T12:36:20.122Z",
+            "modified": "2024-06-21T12:36:20.122Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"amount\": 100,\n  \"accountId\": 1,\n  \"categoryId\": 1, \n  \"currencyTypeId\": 1,\n  \"exchange_rate\": 2\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "dc45b74e-c6d4-4b6d-8884-efc157c7c057",
+            "colId": "4c017bdf-7fed-4fcc-ae90-cf65896b05dc",
+            "containerId": "",
+            "name": "http://localhost:3000/api/transaction/",
+            "url": "http://localhost:3000/api/transactions",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2024-06-21T12:36:30.966Z",
+            "modified": "2024-06-21T12:36:30.966Z",
+            "headers": [],
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzE4OTI2NDQ4fQ.4toMCrqbQhvzbeDkt3TRd--pPEfAjFRav0VWJj61Lxs"
+            }
+        },
+        {
+            "_id": "24228600-7158-4276-a0d4-6a9a84dda255",
+            "colId": "4c017bdf-7fed-4fcc-ae90-cf65896b05dc",
+            "containerId": "",
+            "name": "http://localhost:3000/api/accounts/ Copy",
+            "url": "http://localhost:3000/api/accounts/",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2024-06-21T12:36:53.326Z",
+            "modified": "2024-06-21T12:36:53.326Z",
+            "headers": [],
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzE4OTcxMDMzfQ.YiGjg_abID5f5VyBtPUQHgkbIKOOvAZWEz3FG7MRQ_U"
+            }
+        },
+        {
+            "_id": "e1a13109-96e9-40d9-902e-da3ab7103d2a",
+            "colId": "4c017bdf-7fed-4fcc-ae90-cf65896b05dc",
+            "containerId": "",
+            "name": "http://localhost:3000/api/accounts/",
+            "url": "http://localhost:3000/api/accounts/14",
+            "method": "DELETE",
+            "sortNum": 40000,
+            "created": "2024-06-21T12:36:59.495Z",
+            "modified": "2024-06-21T12:36:59.495Z",
+            "headers": [],
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzE4MzcwNzEzfQ.3AMcV8FkxYt2MT5_C_aygUKQz7c2V6L6fqVJ4uyl6Yk"
+            }
+        },
+        {
+            "_id": "84588467-ef53-485e-b8fd-aff8bd70ce8b",
+            "colId": "4c017bdf-7fed-4fcc-ae90-cf65896b05dc",
+            "containerId": "",
+            "name": "http://localhost:3000/api/accounts/ Copy Copy",
+            "url": "http://localhost:3000/api/accounts/",
+            "method": "POST",
+            "sortNum": 50000,
+            "created": "2024-06-21T12:37:14.650Z",
+            "modified": "2024-06-21T12:37:14.650Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\": \"Plin\",\n  \"balance\": 2000,\n  \"currencyTypeId\": 1,\n  \"accountTypeId\": 1\n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzE4OTcxMDMzfQ.YiGjg_abID5f5VyBtPUQHgkbIKOOvAZWEz3FG7MRQ_U"
+            }
+        },
+        {
+            "_id": "9d40e85e-c433-442a-8da6-e72a549990fa",
+            "colId": "4c017bdf-7fed-4fcc-ae90-cf65896b05dc",
+            "containerId": "",
+            "name": "http://localhost:3000/api/auth/signin",
+            "url": "http://localhost:3000/api/auth/signin",
+            "method": "POST",
+            "sortNum": 60000,
+            "created": "2024-06-21T12:37:20.425Z",
+            "modified": "2024-06-21T12:37:20.425Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\": \"root@gmail.com\",\n  \"password\": \"12345678\"\n}",
+                "form": []
+            }
+        },
+        {
+            "_id": "6dad39ef-4e81-419d-872a-4b3592843f28",
+            "colId": "4c017bdf-7fed-4fcc-ae90-cf65896b05dc",
+            "containerId": "",
+            "name": "http://localhost:3000/api/currencyTypes/",
+            "url": "http://localhost:3000/api/currencyType/",
+            "method": "GET",
+            "sortNum": 70000,
+            "created": "2024-06-21T12:37:30.040Z",
+            "modified": "2024-06-21T12:37:30.040Z",
+            "headers": []
+        },
+        {
+            "_id": "fdcacaaf-a627-424f-b8b7-52ecc13071b2",
+            "colId": "4c017bdf-7fed-4fcc-ae90-cf65896b05dc",
+            "containerId": "",
+            "name": "http://localhost:3000/api/auth/signup",
+            "url": "http://localhost:3000/api/auth/signup",
+            "method": "POST",
+            "sortNum": 80000,
+            "created": "2024-06-21T12:37:35.833Z",
+            "modified": "2024-06-21T12:37:35.833Z",
+            "headers": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\": \"root@gmail.com\",\n  \"password\": \"12345678\"\n}",
+                "form": []
+            }
+        }
+    ],
+    "ref": "OBeydYiaNQVmvutR1_RD-0Pe7BiTJ0aTS4BqhtgxLPzP-zX2tOgg3U4f_lSjtThemLegAR5FCVjs6idOfldTCg"
+}
+```
+
+## Hoja de Peticiones para la prueba del EndPoint Objetivo
+```
+@baseUrl = http://localhost:3000/api
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzE4OTQzMDY4fQ._1MQznsxq49tCagUgC15bRDPfGiapS4KRjMpB55Aljw
+### Crear un nuevo usuario
+POST {{baseUrl}}/auth/signup
+Content-Type: application/json
+
+{
+  "first_name": "John",
+  "last_name": "Doe",
+  "email": "john.doe@example.com",
+  "password": "securepassword",
+  "active": true
+}
+
+### Iniciar sesión (para obtener el token)
+POST {{baseUrl}}/auth/signin
+Content-Type: application/json
+
+{
+  "email": "john.doe@example.com",
+  "password": "securepassword"
+}
+
+### Crear un nuevo Objetivo
+POST {{baseUrl}}/objectives
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "target_amount": 3500,
+  "objective_name": "Prueba Presentación",
+  "current_amount": 0,
+  "icon_name": "icon.png",
+  "color_name": "blue",
+  "deadline": "2024-12-31",
+  "currencyTypeId": 1
+}
+
+### Obtener todos los Objetivos del Usuario
+GET {{baseUrl}}/objectives
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### Obtener un Objetivo por id
+GET {{baseUrl}}/objectives/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### Actualizar un Objetivo por id
+PUT {{baseUrl}}/objectives/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "target_amount": 5000,
+  "objective_name": "Hola",
+  "icon_name": "hi",
+  "color_name": "red",
+  "deadline": "2024-12-31",
+  "currencyTypeId": 1
+}
+
+### Eliminar un Objetivo por id
+DELETE {{baseUrl}}/objectives/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### Eliminar todos los Objetivos del Usuario
+DELETE {{baseUrl}}/objectives
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### Agregar monto al Objetivo por id
+PATCH {{baseUrl}}/objectives/1/monto
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "monto": 100
+}
+
+### Ver el progreso de un Objetivo por id
+GET {{baseUrl}}/objectives/1/progreso
+Content-Type: application/json
+Authorization: Bearer {{token}}
+```
+
+## Hoja de Peticiones para la prueba del EndPoint Transacciones
+```
+@baseUrl = http://localhost:3000/api
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzE4OTQ5MzMyfQ.vXW_BoWAm5eCc8dJ61fJ3Kjg8VwZzb3L0M9-gs4QRAw
+
+### Crear Usuario
+POST {{baseUrl}}/auth/signup
+Content-Type: application/json
+
+{
+  "email": "root@gmail.com",
+  "password": "12345678"
+}
+
+### Iniciar Sesión
+POST {{baseUrl}}/auth/signin
+Content-Type: application/json
+
+{
+  "email": "root@gmail.com",
+  "password": "12345678"
+}
+
+### Crear Cuenta
+POST {{baseUrl}}/accounts
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "name": "NuevoPlin",
+  "balance": 2000,
+  "currencyTypeId": 1,
+  "accountTypeId": 1
+}
+
+### Obtener Cuentas
+GET {{baseUrl}}/accounts
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### Crear Transacción
+POST {{baseUrl}}/transactions
+Content-Type: application/json
+
+{
+  "amount": 600,
+  "accountId": 1,
+  "categoryId": 1, 
+  "currencyTypeId": 1
+}
+
+### Obtener Transacciones
+GET {{baseUrl}}/transactions
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### Obtener una transacción por ID
+GET {{baseUrl}}/transactions/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### Editar Transacción
+PUT {{baseUrl}}/transactions/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "amount": 123,
+  "accountId": 1,
+  "categoryId": 1, 
+  "currencyTypeId": 1
+}
+
+### Eliminar Transacción
+DELETE {{baseUrl}}/transactions/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+``` 
