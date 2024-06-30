@@ -23,13 +23,13 @@ module.exports = app => {
     // Eliminar todos los transactions
     router.delete("/", transactionController.deleteAll);
 
-    router.get("/incomeSum/ByMonth", transactionController.incomeSumByMonth);
-    router.get("/expenseSum/ByMonth", transactionController.expenseSumByMonth);
+    router.get("/incomeSum/ByMonth/:userId", transactionController.incomeSumByMonth);
+    router.get("/expenseSum/ByMonth/:userId", transactionController.expenseSumByMonth);
 
 
-    router.get("/incomeSum/ByCategory", transactionController.IncomeSumByCategory);
+    router.get("/incomeSum/ByCategory/:userId", transactionController.IncomeSumByCategory);
 
-    router.get("/expenseSum/ByCategory", transactionController.ExpenseSumByCategory);
+    router.get("/expenseSum/ByCategory/:userId", transactionController.ExpenseSumByCategory);
 
     router.post("/transfer/waza", transactionController.transfer);
 

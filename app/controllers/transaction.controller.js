@@ -5,7 +5,7 @@ const Category = db.categories;
 const User = db.user;
 const CurrencyType = db.currencyTypes;
 const { validationResult } = require("express-validator");
-const { Sequelize, Op } = require("sequelize");
+const { Sequelize, Op, where } = require("sequelize");
 
 // Create and Save a new transaction
 exports.create = async (req, res) => {
@@ -216,17 +216,27 @@ exports.deleteAll = (req, res) => {
 
 exports.incomeSumByMonth = async (req, res) => {
   try {
+    const {userId} = req.params;
     const now = new Date();
     const sixMonthsAgo = new Date();
-    sixMonthsAgo.setMonth(now.getMonth() - 5); // Ajustar para incluir exactamente los últimos 6 meses
+    sixMonthsAgo.setMonth(now.getMonth() - 5);
 
     const incomeTransactions = await Transaction.findAll({
       where: {
-        type: "Ingreso",
+        amount: {
+          [Sequelize.Op.gt]: 0,
+        },
         createdAt: {
           [Sequelize.Op.between]: [sixMonthsAgo, now],
         },
       },
+      include: [
+        {
+          model: Account,
+          where: {userId},
+          
+        },
+      ],
     });
 
     const sumByMonth = {};
@@ -248,7 +258,10 @@ exports.incomeSumByMonth = async (req, res) => {
     const sixMonthsAgoMonth = sixMonthsAgo.getMonth() + 1;
 
     for (let i = 0; i < 6; i++) {
-      const key = `${sixMonthsAgoYear}-${sixMonthsAgoMonth + i}`;
+      const monthIndex = (sixMonthsAgoMonth + i - 1) % 12 + 1;
+      const yearOffset = Math.floor((sixMonthsAgoMonth + i - 1) / 12);
+      const key = `${sixMonthsAgoYear + yearOffset}-${monthIndex}`;
+
       if (!(key in sumByMonth)) {
         sumByMonth[key] = 0;
       }
@@ -272,21 +285,31 @@ exports.incomeSumByMonth = async (req, res) => {
 
 exports.expenseSumByMonth = async (req, res) => {
   try {
+    const {userId} = req.params;
     const now = new Date();
     const sixMonthsAgo = new Date();
-    sixMonthsAgo.setMonth(now.getMonth() - 5); // Ajustar para incluir exactamente los últimos 6 meses
+    sixMonthsAgo.setMonth(now.getMonth() - 5);
 
-    const expenseTransactions = await Transaction.findAll({
+    const incomeTransactions = await Transaction.findAll({
       where: {
-        type: "Egreso",
+        amount: {
+          [Sequelize.Op.lt]: 0,
+        },
         createdAt: {
           [Sequelize.Op.between]: [sixMonthsAgo, now],
         },
       },
+      include: [
+        {
+          model: Account,
+          where: {userId},
+          
+        },
+      ],
     });
 
     const sumByMonth = {};
-    expenseTransactions.forEach((transaction) => {
+    incomeTransactions.forEach((transaction) => {
       const date = new Date(transaction.createdAt);
       const month = date.getMonth() + 1;
       const year = date.getFullYear();
@@ -304,7 +327,10 @@ exports.expenseSumByMonth = async (req, res) => {
     const sixMonthsAgoMonth = sixMonthsAgo.getMonth() + 1;
 
     for (let i = 0; i < 6; i++) {
-      const key = `${sixMonthsAgoYear}-${sixMonthsAgoMonth + i}`;
+      const monthIndex = (sixMonthsAgoMonth + i - 1) % 12 + 1;
+      const yearOffset = Math.floor((sixMonthsAgoMonth + i - 1) / 12);
+      const key = `${sixMonthsAgoYear + yearOffset}-${monthIndex}`;
+
       if (!(key in sumByMonth)) {
         sumByMonth[key] = 0;
       }
@@ -328,13 +354,16 @@ exports.expenseSumByMonth = async (req, res) => {
 
 exports.IncomeSumByCategory = async (req, res) => {
   try {
+    const {userId} = req.params;
     const incomeSumByCategory = await Transaction.findAll({
       attributes: [
         "categoryId",
         [Sequelize.fn("SUM", Sequelize.col("amount")), "total"],
       ],
       where: {
-        type: "Ingreso", // Filtra solo los ingresos
+        amount: {
+          [Sequelize.Op.gt]: 0,
+        },
       },
       group: ["categoryId"],
       include: [
@@ -342,7 +371,14 @@ exports.IncomeSumByCategory = async (req, res) => {
           model: Category,
           attributes: ["name"],
         },
+        {
+          model: Account,
+          where: { userId },
+          attributes: [],
+
+        }
       ],
+      
     });
 
     if (incomeSumByCategory.length === 0) {
@@ -358,15 +394,19 @@ exports.IncomeSumByCategory = async (req, res) => {
   }
 };
 
+
 exports.ExpenseSumByCategory = async (req, res) => {
   try {
+    const {userId} = req.params;
     const incomeSumByCategory = await Transaction.findAll({
       attributes: [
         "categoryId",
         [Sequelize.fn("SUM", Sequelize.col("amount")), "total"],
       ],
       where: {
-        type: "Egreso", // Filtra solo los ingresos
+        amount: {
+          [Sequelize.Op.lt]: 0,
+        }, // Filtra solo los ingresos
       },
       group: ["categoryId"],
       include: [
@@ -374,6 +414,12 @@ exports.ExpenseSumByCategory = async (req, res) => {
           model: Category,
           attributes: ["name"],
         },
+        {
+          model: Account,
+          where: { userId },
+          attributes: [],
+
+        }
       ],
     });
 
