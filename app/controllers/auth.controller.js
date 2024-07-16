@@ -60,16 +60,16 @@ exports.signin = (req, res) => {
         });
       }
 
-      // let token = jwt.sign({ id: user.id }, config.auth.secret, {
-      //   expiresIn: 86400 // 24 hours
-      // });
-      let token = jwt.sign({ id: user.id }, config.auth.secret);
+       let token = jwt.sign({ id: user.id }, config.auth.secret, {
+         expiresIn: 86400 // 24 hours
+       });
 
       let authorities = [];
       user.getRoles().then((roles) => {
         for (let i = 0; i < roles.length; i++) {
           authorities.push("ROLE_" + roles[i].name.toUpperCase());
         }
+        console.log('User signed in successfully:', user.email);
 
         res.status(200).send({
           id: user.id,
