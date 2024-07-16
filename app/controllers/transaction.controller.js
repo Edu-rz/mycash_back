@@ -107,20 +107,9 @@ exports.findAll = (req, res) => {
       }
 
       // Extract all transactions from the user's accounts
-      const transactions = user.Accounts.reduce((acc, account) => {
+      const response = user.Accounts.reduce((acc, account) => {
         return acc.concat(account.Transactions);
       }, []);
-
-      // Calculate the total amount of all transactions
-      const totalAmount = transactions.reduce((sum, transaction) => {
-        return sum + transaction.amount;
-      }, 0);
-
-      // Structure the response
-      const response = {
-        amount: totalAmount,
-        transacciones: transactions,
-      };
 
       res.send(response);
     })
