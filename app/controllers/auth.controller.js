@@ -11,6 +11,8 @@ exports.signup = (req, res) => {
   User.create({
     email: req.body.email,
     password: bcrypt.hashSync(req.body.password, 8),
+    first_name: req.body.first_name,
+    last_name: req.body.last_name,
   })
     .then((user) => {
       if (req.body.roles) {
@@ -73,6 +75,7 @@ exports.signin = (req, res) => {
 
         res.status(200).send({
           id: user.id,
+          name: user.first_name,
           email: user.email,
           roles: authorities,
           accessToken: token,
