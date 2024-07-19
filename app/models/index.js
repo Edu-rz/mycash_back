@@ -69,16 +69,10 @@ db.accounts.belongsTo(db.currencyTypes, {
   foreignKey: "currencyTypeId",
 });
 
-db.currencyTypes.hasMany(db.objectives, {
-  foreignKey: "currencyTypeId",
-});
-db.objectives.belongsTo(db.currencyTypes, {
-  foreignKey: "currencyTypeId",
-});
-
 db.user.hasMany(db.objectives, {
   foreignKey: 'userId'
 })
+
 db.objectives.belongsTo(db.user, {
   foreignKey: 'userId'
 });
