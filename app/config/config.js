@@ -6,11 +6,7 @@ module.exports = {
   db: {
     DB_HOST: process.env.DB_HOST || "127.0.0.1",
     DB_USER: process.env.DB_USER || "root",
-<<<<<<< HEAD
     DB_PASS: process.env.DB_PASS || "1234",  //"1234",
-=======
-    DB_PASS: process.env.DB_PASS || "1234",
->>>>>>> a157061850513a8e27fe23aaae2a12a00023694c
     DB_NAME: process.env.DB_NAME || "mycash_db",
     dialect: "mysql",
 

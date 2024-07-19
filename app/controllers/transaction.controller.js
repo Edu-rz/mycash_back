@@ -14,7 +14,7 @@ exports.create = async (req, res) => {
     return res.status(422).json({ errors: errors.array() });
   }
 
-  const { amount, accountId, categoryId, currencyTypeId, exchange_rate } = req.body;
+  const { amount, type, accountId, categoryId, currencyTypeId, exchange_rate } = req.body;
 
   try {
     // Iniciar una transacción en la base de datos
@@ -52,6 +52,7 @@ exports.create = async (req, res) => {
       const transaction = await Transaction.create(
         {
           amount: amount,
+          type: type,
           accountId: accountId,
           categoryId: categoryId,
           currencyTypeId: currencyTypeId,
