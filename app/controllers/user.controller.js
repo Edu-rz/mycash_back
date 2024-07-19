@@ -40,7 +40,7 @@ exports.uploadProfilePicture = [
           return res.status(404).send({ message: "Usuario no encontrado." });
         }
 
-        user.profile_picture = `/uploads/${req.file.filename}`;
+        user.profile_picture = `uploads/${req.file.filename}`;
         return user.save();
       })
       .then(updatedUser => {
