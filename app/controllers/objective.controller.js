@@ -219,7 +219,53 @@ exports.agregarMontoObjetivo = (req, res) => {
     });
 };
 
-// (8) Ver el progreso de un objetivo del Usuario
+// (8) Retirar monto del objetivo del Usuario
+exports.retirarMontoObjetivo = (req, res) => {
+  const userId = req.userId; // Utiliza req.userId
+  const { id } = req.params; // ID del objetivo
+  const { monto } = req.body; // Monto a retirar del objetivo
+
+  Objective.findByPk(id)
+    .then((objective) => {
+      if (!objective) {
+        return res.status(404).send({
+          message: `No se puede encontrar el Objetivo con id=${id} para el usuario con id=${userId}.`,
+        });
+      }
+
+      // Verificar que el objetivo pertenece al usuario antes de actualizar
+      if (objective.userId !== userId) {
+        return res.status(403).send({
+          message: `No tienes permisos para modificar el Objetivo con id=${id}.`,
+        });
+      }
+
+      // Calcular el nuevo valor del current_amount después de retirar el monto
+      const newCurrentAmount = objective.current_amount - monto;
+
+      // Verificar si el nuevo current_amount es menor que 0
+      if (newCurrentAmount < 0) {
+        return res.status(400).send({
+          message: `El monto ahorrado no puede ser negativo.`,
+        });
+      }
+
+      // Actualizar el monto del objetivo
+      objective.current_amount = newCurrentAmount;
+      return objective.save();
+    })
+    .then((updatedObjective) => {
+      res.send(updatedObjective);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: `Ocurrió un error al retirar monto del objetivo con id=${id} para el usuario con id=${userId}.`,
+        error: err.message,
+      });
+    });
+};
+
+// (9) Ver el progreso de un objetivo del Usuario
 exports.verProgreso = (req, res) => {
   const userId = req.userId; // Utiliza req.userId
   const { id } = req.params; // ID del objetivo

@@ -26,6 +26,9 @@ module.exports = app => {
   // Agregar monto a un Objective por id
   router.patch("/:id/monto", [authJwt.verifyToken], objectiveController.agregarMontoObjetivo);
 
+  // Endpoint para retirar monto del objetivo
+  app.put('/:id/removeAmount', [authJwt.verifyToken], objectiveController.retirarMontoObjetivo);
+
   // Ver el progreso de un Objective por id
   router.get("/:id/progreso", [authJwt.verifyToken], objectiveController.verProgreso);
 
