@@ -2,17 +2,11 @@
 const { where } = require("sequelize");
 const db = require("../models");
 const Objective = db.objectives;
-const CurrencyType = db.currencyTypes;
 
 // (1) Crear un nuevo Objetivo
-exports.create = (req, res) => {
-  // Validar la solicitud
-  if (!req.body.target_amount) {
-    res.status(400).send({
-      message: "¡El contenido no puede estar vacío!",
-    });
-    return;
-  }
+exports.create = async (req, res) => {
+  // user Id
+  const userId = req.userId;
 
   // Crear un Objetivo
   const objective = {
@@ -22,20 +16,24 @@ exports.create = (req, res) => {
     icon_name: req.body.icon_name,
     color_name: req.body.color_name,
     deadline: req.body.deadline,
-    userId: req.userId, // Asegúrate de utilizar req.userId
-    currencyTypeId: req.body.currencyTypeId,
+    userId: userId,
   };
 
-  // Guardar el Objetivo en la base de datos
-  Objective.create(objective)
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: err.message || "Ocurrió un error al crear el Objetivo.",
-      });
+    // Validar la solicitud
+  if (!req.body.target_amount) {
+    res.status(400).send({
+      message: "¡El contenido no puede estar vacío!",
     });
+    return;
+  }
+
+  // Guardar el Objetivo en la base de datos
+  const result = await Objective.create(objective);
+
+  return res.status(200).json({
+    message: "El objetivo se creó exitosamente",
+    result: result,
+  });
 };
 
 // (2) Obtener todos los Objetivos del Usuario
@@ -44,7 +42,6 @@ exports.findAll = (req, res) => {
 
   Objective.findAll({
     where: { userId: userId },
-    include: [{model: CurrencyType}]
   })
     .then((data) => {
       res.send(data);
@@ -66,7 +63,6 @@ exports.findOne = (req, res) => {
       id: id,
       userId: userId
     },
-    include: [{model: CurrencyType}]
   })
     .then((data) => {
       if (data) {
@@ -96,7 +92,6 @@ exports.update = (req, res) => {
     icon_name: req.body.icon_name,
     color_name: req.body.color_name,
     deadline: req.body.deadline,
-    currencyTypeId: req.body.currencyTypeId,
   };
 
   // Buscar el objetivo en la base de datos
@@ -105,7 +100,6 @@ exports.update = (req, res) => {
       id: id,
       userId: userId
     },
-    include: [{model: CurrencyType}]
   })
     .then((objective) => {
       if (!objective) {
@@ -130,32 +124,34 @@ exports.update = (req, res) => {
 
 
 // (5) Eliminar un Objetivo por id del Usuario
-exports.delete = (req, res) => {
-  const userId = req.userId; // Utiliza req.userId
-  const id = req.params.id; // ID del objetivo a eliminar
+exports.delete = async (req, res) => {
+  try {
+    // user Id
+    const userId = req.userId;
+    const id = req.params.id;
 
-  Objective.destroy({
-    where: { 
-      id: id,
-      userId: userId 
-    }
-  })
-    .then((num) => {
-      if (num == 1) {
-        res.send({
-          message: "El Objetivo fue eliminado con éxito!",
-        });
-      } else {
-        res.status(404).send({
-          message: `No se puede eliminar el Objetivo con id=${id} para el usuario con id=${userId}. Tal vez el Objetivo no fue encontrado!`,
-        });
-      }
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: `Ocurrió un error al eliminar el Objetivo con id=${id} para el usuario con id=${userId}.`,
-      });
+    const objective = await Objective.findOne({
+      where: { id: id, userId: userId },
     });
+
+    if (!objective) {
+      return res.status(404).send({
+        message: `No se puede eliminar el Objetivo con id=${id} para el usuario con id=${userId}. Tal vez el Objetivo no fue encontrado!`,
+      });
+    }
+
+    await Objective.destroy({
+      where: { id: id },
+    });
+
+    res.send({
+      message: "El Objetivo fue eliminado con éxito!",
+    });
+  } catch (err) {
+    res.status(500).send({
+      message: "No se puede eliminar el Objetivo con id=" + id,
+    });
+  }
 };
 
 // (6) Eliminar todos los Objetivos del Usuario
